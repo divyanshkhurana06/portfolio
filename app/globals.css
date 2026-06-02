@@ -1,0 +1,123 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light mode — warm paper, ink */
+    --paper: 250 248 243;        /* #faf8f3  warm off-white */
+    --paper-raised: 245 242 234; /* #f5f2ea */
+    --paper-sunk: 238 234 224;   /* #eeeae0 */
+    --ink: 28 25 23;             /* #1c1917  near-black, warm */
+    --ink-muted: 87 83 78;       /* #57534e  stone-600 */
+    --ink-faint: 168 162 158;    /* #a8a29e  stone-400 */
+    --rule: 231 229 228;         /* #e7e5e4 */
+    --accent: 180 83 9;          /* #b45309  amber-700, restrained */
+    --accent-soft: 254 243 199;  /* #fef3c7 */
+  }
+
+  .dark {
+    /* Dark mode — warm charcoal */
+    --paper: 20 18 17;           /* #141211 */
+    --paper-raised: 28 25 23;    /* #1c1917 */
+    --paper-sunk: 12 11 10;      /* #0c0b0a */
+    --ink: 240 237 230;          /* #f0ede6 */
+    --ink-muted: 168 162 158;    /* #a8a29e */
+    --ink-faint: 120 113 108;    /* #78716c */
+    --rule: 41 37 36;            /* #292524 */
+    --accent: 245 158 11;        /* #f59e0b  amber-500 */
+    --accent-soft: 41 37 36;     /* #292524 */
+  }
+
+  * {
+    border-color: rgb(var(--rule));
+  }
+
+  html {
+    color-scheme: light;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: rgb(var(--paper));
+    color: rgb(var(--ink));
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  /* Focus ring: visible, calm */
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background-color: rgb(var(--accent) / 0.18);
+    color: rgb(var(--ink));
+  }
+
+  /* Better default underlines */
+  a {
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+}
+
+@layer components {
+  .container-prose {
+    @apply mx-auto w-full max-w-2xl px-5 sm:px-6;
+  }
+
+  .container-wide {
+    @apply mx-auto w-full max-w-3xl px-5 sm:px-6;
+  }
+
+  /* Small caps label, used for section headings */
+  .eyebrow {
+    @apply text-xs font-medium uppercase tracking-[0.14em] text-ink-muted;
+  }
+
+  /* Subtle link underline that grows on hover */
+  .link {
+    @apply text-ink underline decoration-ink-faint underline-offset-[3px]
+           transition-colors hover:decoration-accent hover:text-accent;
+  }
+
+  .link-quiet {
+    @apply text-ink no-underline transition-colors hover:text-accent;
+  }
+
+  /* Hairline divider that respects rule color */
+  .hairline {
+    @apply h-px w-full bg-rule;
+  }
+}
+
+@layer utilities {
+  /* Pretty text balance for headings (supported in modern browsers) */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  /* Reduce motion: be respectful */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
