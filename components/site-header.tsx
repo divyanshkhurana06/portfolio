@@ -15,7 +15,7 @@ const nav = [
   { href: "/reading", label: "reading" },
   { href: "/now", label: "now" },
   { href: "/uses", label: "uses" },
-  { href: "/guestbook", label: "guestbook" },
+  { href: "/endorse", label: "endorse" },
 ];
 
 export function SiteHeader() {

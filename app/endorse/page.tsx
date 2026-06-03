@@ -3,42 +3,48 @@ import { PageHeader } from "@/components/page-header";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Guestbook",
-  description: "Leave a note. Say hi. Tell me what you're building.",
+  title: "Endorse",
+  description:
+    "Kind words from people I've worked with — collaborators, teammates, anyone with a thoughtful note to leave.",
 };
 
-// Placeholder static entries — wire this up to a database/edge function later.
+// Placeholder static entries — wire this up to a database/edge function
+// later. Each entry is a short endorsement, ideally from someone you've
+// actually worked with (collaborator, teammate, professor, mentor).
 const entries = [
   {
-    name: "A friendly stranger",
+    name: "Placeholder Collaborator",
+    relation: "Worked together at a hackathon",
     date: "2026-05-12",
-    body: "Found your site through a link from a friend. Stayed for the typography.",
+    body: "Placeholder endorsement — a short, honest sentence or two from someone you've worked with. Replace with the real thing.",
   },
   {
-    name: "Future you",
+    name: "Placeholder Teammate",
+    relation: "Internship colleague",
     date: "2026-04-03",
-    body: "Hi past me — proud of you for actually publishing this.",
+    body: "Placeholder endorsement — describe a specific moment or skill. Specifics are always more believable than adjectives.",
   },
   {
-    name: "Curious lurker",
+    name: "Placeholder Mentor",
+    relation: "Project advisor",
     date: "2026-03-20",
-    body: "Just wanted to say the /uses page made me reconsider three things in my own setup.",
+    body: "Placeholder endorsement — one more, so the list doesn't look thin.",
   },
 ];
 
-export default function GuestbookPage() {
+export default function EndorsePage() {
   return (
     <div className="container-prose pt-12 sm:pt-16">
       <PageHeader
-        eyebrow="guestbook"
-        title="Sign the book."
-        lede="A small, slow comments section. No accounts, no algorithm — just a note from you, if you'd like to leave one."
+        eyebrow="endorse"
+        title="Kind words."
+        lede="If we've worked together — on a project, an internship, a hackathon, a class — and you'd like to leave a short note, this is where it'd live."
       />
 
       {/* Placeholder form — non-functional. Hook this up to a server action
           or backend later. The submit button is disabled for now. */}
       <form
-        aria-label="Leave a guestbook entry"
+        aria-label="Leave an endorsement"
         className="rounded-xl border border-rule/70 bg-paper-raised/40 p-5 sm:p-6"
         action="#"
       >
@@ -48,14 +54,30 @@ export default function GuestbookPage() {
               htmlFor="name"
               className="mb-1 block font-mono text-xs uppercase tracking-wider text-ink-faint"
             >
-              Name (or alias)
+              Your name
             </label>
             <input
               id="name"
               name="name"
               type="text"
-              autoComplete="nickname"
-              placeholder="A friendly stranger"
+              autoComplete="name"
+              placeholder="Jane Doe"
+              className="w-full rounded-md border border-rule bg-paper px-3 py-2 text-sm
+                         text-ink placeholder:text-ink-faint focus:border-accent focus:outline-none"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="relation"
+              className="mb-1 block font-mono text-xs uppercase tracking-wider text-ink-faint"
+            >
+              How we worked together
+            </label>
+            <input
+              id="relation"
+              name="relation"
+              type="text"
+              placeholder="Hackathon teammate / internship lead / collaborator on X"
               className="w-full rounded-md border border-rule bg-paper px-3 py-2 text-sm
                          text-ink placeholder:text-ink-faint focus:border-accent focus:outline-none"
             />
@@ -65,13 +87,13 @@ export default function GuestbookPage() {
               htmlFor="message"
               className="mb-1 block font-mono text-xs uppercase tracking-wider text-ink-faint"
             >
-              Message
+              Your endorsement
             </label>
             <textarea
               id="message"
               name="message"
               rows={4}
-              placeholder="Say hi, share a thought, tell me what you're building…"
+              placeholder="A short, specific note. Two or three sentences is plenty."
               className="w-full resize-y rounded-md border border-rule bg-paper px-3 py-2 text-sm
                          text-ink placeholder:text-ink-faint focus:border-accent focus:outline-none"
             />
@@ -86,7 +108,7 @@ export default function GuestbookPage() {
               className="rounded-md bg-ink px-4 py-2 text-sm font-medium text-paper
                          opacity-60 transition hover:opacity-100 disabled:cursor-not-allowed"
             >
-              Sign
+              Endorse
             </button>
           </div>
         </div>
@@ -99,7 +121,7 @@ export default function GuestbookPage() {
       <ul className="mt-12 space-y-8">
         {entries.map((e, i) => (
           <li key={i} className="border-l-2 border-rule pl-5">
-            <div className="flex items-baseline justify-between gap-3">
+            <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
               <p className="font-serif text-base italic text-ink">{e.name}</p>
               <time
                 dateTime={e.date}
@@ -112,7 +134,8 @@ export default function GuestbookPage() {
                 })}
               </time>
             </div>
-            <p className="mt-1 text-[0.95rem] leading-relaxed text-ink-muted">
+            <p className="mt-0.5 text-xs text-ink-faint">{e.relation}</p>
+            <p className="mt-2 text-[0.95rem] leading-relaxed text-ink-muted">
               {e.body}
             </p>
           </li>

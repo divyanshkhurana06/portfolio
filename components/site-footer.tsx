@@ -28,7 +28,7 @@ export function SiteFooter() {
         <div className="grid grid-cols-2 gap-x-10 gap-y-2 sm:grid-cols-3">
           <FooterLink href="/now">/now</FooterLink>
           <FooterLink href="/uses">/uses</FooterLink>
-          <FooterLink href="/guestbook">/guestbook</FooterLink>
+          <FooterLink href="/endorse">/endorse</FooterLink>
           <FooterLink href={site.social.rss}>rss</FooterLink>
           <FooterLink href={site.social.github} external>
             github

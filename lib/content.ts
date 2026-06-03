@@ -19,6 +19,12 @@ export type Project = {
   href?: string;
   repo?: string;
   stack?: string[];
+  // Shown on the back of the project card (on hover).
+  details?: {
+    role?: string;
+    highlights?: string[];
+    notes?: string;
+  };
 };
 
 export type Note = {
@@ -85,44 +91,62 @@ export const posts: Post[] = [
 
 export const projects: Project[] = [
   {
-    slug: "project-one",
-    name: "Project One",
+    slug: "interact",
+    name: "Interact",
     blurb:
-      "A short, plain-language description of what the project does and who it's for. Avoid jargon — pretend you're telling a friend.",
-    year: 2026,
-    status: "shipped",
-    href: "https://example.com",
-    repo: "https://github.com/yourhandle/project-one",
-    stack: ["Next.js", "TypeScript", "Postgres"],
-  },
-  {
-    slug: "project-two",
-    name: "Project Two",
-    blurb:
-      "An experiment that became more useful than expected. Currently in active development; expect rough edges.",
+      "A full-stack dApp that lets users spend crypto on real-world things — food delivery, flights, shopping — through LLM-based AI agents and virtual credit cards. Escrow smart contracts handle trustless payments with dual attestation and time-based fallback. Won ETHGlobal Prague.",
     year: 2025,
-    status: "in progress",
-    repo: "https://github.com/yourhandle/project-two",
-    stack: ["Swift", "SwiftUI"],
+    status: "shipped",
+    // TODO: add live link if there is one.
+    // TODO: add repo URL.
+    stack: ["Next.js", "React", "FastAPI", "LangChain", "Solidity", "WebSockets"],
+    details: {
+      role: "Hackathon team — full-stack + smart contracts",
+      highlights: [
+        "Won ETHGlobal Prague",
+        "Escrow with dual attestation & time-based fallback",
+        "Real-time agent execution via FastAPI + WebSockets",
+      ],
+      notes:
+        "Placeholder — add a sentence or two on what you'd do differently, or what you learned, here.",
+    },
   },
   {
-    slug: "project-three",
-    name: "Project Three",
+    slug: "mailed",
+    name: "Mailed",
     blurb:
-      "A tiny utility that does one thing well. Lives on as a CLI even though the GUI got retired.",
-    year: 2024,
-    status: "archived",
-    repo: "https://github.com/yourhandle/project-three",
-    stack: ["Rust"],
+      "A Chrome extension for email tracking with real-time analytics and AI-based categorization. Responsive React + TypeScript dashboard, Node.js + Supabase backend, Hugging Face for categorization, Google OAuth for sign-in.",
+    year: 2025,
+    status: "shipped",
+    // TODO: add Chrome store link and repo URL.
+    stack: ["React", "TypeScript", "Tailwind", "Node.js", "Supabase", "Hugging Face"],
+    details: {
+      role: "Solo build",
+      highlights: [
+        "Real-time email tracking from inside Gmail",
+        "AI categorization via Hugging Face",
+        "Google OAuth + Node.js + Supabase backend",
+      ],
+      notes:
+        "Placeholder — what worked, what didn't, anything else worth saying.",
+    },
   },
   {
-    slug: "project-four",
-    name: "Project Four",
+    slug: "next-thing",
+    name: "Next thing",
     blurb:
-      "Pre-alpha exploration. Posting it here mostly to keep myself honest about finishing it.",
+      "Placeholder card for the project I'm currently exploring. Will replace this with something real once it's worth talking about.",
     year: 2026,
     status: "exploring",
-    stack: ["Python", "DuckDB"],
+    details: {
+      role: "Placeholder — solo / team / what kind of role.",
+      highlights: [
+        "Placeholder bullet one.",
+        "Placeholder bullet two.",
+        "Placeholder bullet three.",
+      ],
+      notes: "Placeholder — describe the project in more depth once it's ready.",
+    },
   },
 ];
 
@@ -202,23 +226,23 @@ export const uses = {
 
 // "Now" page — a snapshot of what you're focused on lately.
 export const now = {
-  updated: "2026-06-01",
+  updated: "2026-06-03",
   blocks: [
     {
       heading: "Working on",
-      body: "A placeholder description of the project taking most of your attention. One short paragraph is plenty.",
+      body: "Interning at Powergrid (May – July 2026). On the side, slowly chipping away at the next project after Interact — still in the messy ideation phase.",
     },
     {
       heading: "Learning",
-      body: "Whatever you're trying to get better at this season — a language, an instrument, a math topic, a recipe.",
+      body: "Placeholder — something I'm trying to get better at this season. Will fill this in soon.",
     },
     {
       heading: "Reading",
-      body: "A book or two you'd recommend, and one you're slowly working through.",
+      body: "Placeholder — a book or two I'd recommend, plus one I'm slowly working through.",
     },
     {
       heading: "Elsewhere",
-      body: "Where you are physically, or where your head is. A friendly little anchor in time.",
+      body: "Placeholder — where I am physically, or where my head is, this month.",
     },
   ],
 } as const;
