@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/page-header";
+import { endorsements } from "@/lib/content";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -7,30 +8,6 @@ export const metadata: Metadata = {
   description:
     "Kind words from people I've worked with — collaborators, teammates, anyone with a thoughtful note to leave.",
 };
-
-// Placeholder static entries — wire this up to a database/edge function
-// later. Each entry is a short endorsement, ideally from someone you've
-// actually worked with (collaborator, teammate, professor, mentor).
-const entries = [
-  {
-    name: "Placeholder Collaborator",
-    relation: "Worked together at a hackathon",
-    date: "2026-05-12",
-    body: "Placeholder endorsement — a short, honest sentence or two from someone you've worked with. Replace with the real thing.",
-  },
-  {
-    name: "Placeholder Teammate",
-    relation: "Internship colleague",
-    date: "2026-04-03",
-    body: "Placeholder endorsement — describe a specific moment or skill. Specifics are always more believable than adjectives.",
-  },
-  {
-    name: "Placeholder Mentor",
-    relation: "Project advisor",
-    date: "2026-03-20",
-    body: "Placeholder endorsement — one more, so the list doesn't look thin.",
-  },
-];
 
 export default function EndorsePage() {
   return (
@@ -119,8 +96,8 @@ export default function EndorsePage() {
       </p>
 
       <ul className="mt-12 space-y-8">
-        {entries.map((e, i) => (
-          <li key={i} className="border-l-2 border-rule pl-5">
+        {endorsements.map((e) => (
+          <li key={e.id} className="border-l-2 border-rule pl-5">
             <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
               <p className="font-serif text-base italic text-ink">{e.name}</p>
               <time

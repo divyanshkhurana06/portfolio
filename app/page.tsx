@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { PostList } from "@/components/post-list";
 import { ProjectCard } from "@/components/project-card";
 import { TechMarquee } from "@/components/tech-marquee";
-import { posts, projects, notes, now } from "@/lib/content";
+import { ResumeButton } from "@/components/resume-button";
+import { projects, notes, endorsements } from "@/lib/content";
 import { site } from "@/lib/site";
-import { formatDate, formatDateShort } from "@/lib/utils";
+import { formatDateShort } from "@/lib/utils";
 
 export default function HomePage() {
   return (
@@ -33,23 +33,19 @@ export default function HomePage() {
             .
           </h1>
           <p className="mt-5 text-pretty text-[1.0625rem] leading-[1.75] text-ink-muted">
-            I build software, write the occasional essay, and tinker with small
-            projects that don&rsquo;t always have a point. This site is my corner
-            of the internet — a place to keep my work, my notes, and the things
-            I&rsquo;m thinking about, in one quiet spot.
+            I build software, mostly with AI agents, full stack
+            apps, and blockchain. This site is just a place for me
+            to keep my projects and the things I&rsquo;m thinking about,
+            in one spot.
           </p>
           <p className="mt-4 text-pretty text-[1.0625rem] leading-[1.75] text-ink-muted">
-            You can read what I&rsquo;m up to{" "}
-            <Link href="/now" className="link">
-              right now
-            </Link>
-            , browse{" "}
-            <Link href="/writing" className="link">
-              things I&rsquo;ve written
-            </Link>
-            , see the{" "}
+            Have a look at the{" "}
             <Link href="/projects" className="link">
               projects I&rsquo;ve shipped
+            </Link>
+            , the{" "}
+            <Link href="/gallery" className="link">
+              gallery
             </Link>
             , or just{" "}
             <a href={`mailto:${site.email}`} className="link">
@@ -57,6 +53,67 @@ export default function HomePage() {
             </a>
             .
           </p>
+
+          {/* Small, deliberate row of actions. The resume gets a touch
+              of weight; the rest are quieter. */}
+          <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3">
+            <ResumeButton />
+            <span aria-hidden className="text-ink-faint">·</span>
+            <a
+              href={`mailto:${site.email}`}
+              className="group text-sm text-ink-muted no-underline transition-colors hover:text-accent"
+            >
+              email{" "}
+              <span
+                aria-hidden
+                className="inline-block transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              >
+                ↗
+              </span>
+            </a>
+            <a
+              href={site.social.github}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="group text-sm text-ink-muted no-underline transition-colors hover:text-accent"
+            >
+              github{" "}
+              <span
+                aria-hidden
+                className="inline-block transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              >
+                ↗
+              </span>
+            </a>
+            <a
+              href={site.social.linkedin}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="group text-sm text-ink-muted no-underline transition-colors hover:text-accent"
+            >
+              linkedin{" "}
+              <span
+                aria-hidden
+                className="inline-block transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              >
+                ↗
+              </span>
+            </a>
+            <a
+              href={site.social.x}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="group text-sm text-ink-muted no-underline transition-colors hover:text-accent"
+            >
+              x{" "}
+              <span
+                aria-hidden
+                className="inline-block transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              >
+                ↗
+              </span>
+            </a>
+          </div>
         </div>
       </section>
 
@@ -68,56 +125,11 @@ export default function HomePage() {
       <div className="container-wide">
         <Divider />
 
-        {/* Currently — a small at-a-glance card */}
-        <section aria-labelledby="currently">
-          <SectionHeader
-            id="currently"
-            label="currently"
-            href="/now"
-            hrefLabel="full /now page"
-          />
-          <div className="mt-5 grid gap-4 sm:grid-cols-2">
-            {now.blocks.slice(0, 4).map((b) => (
-              <div
-                key={b.heading}
-                className="rounded-xl border border-rule/70 bg-paper-raised/40 p-5
-                           transition-colors hover:bg-paper-raised"
-              >
-                <p className="eyebrow">{b.heading}</p>
-                <p className="mt-2 text-[0.95rem] leading-relaxed text-ink-muted">
-                  {b.body}
-                </p>
-              </div>
-            ))}
-          </div>
-          <p className="mt-3 text-xs text-ink-faint">
-            Last updated{" "}
-            <time dateTime={now.updated}>{formatDate(now.updated)}</time>.
-          </p>
-        </section>
-
-        <Divider />
-
-        {/* Latest writing */}
-        <section aria-labelledby="writing">
-          <SectionHeader
-            id="writing"
-            label="recent writing"
-            href="/writing"
-            hrefLabel="all posts"
-          />
-          <div className="mt-4">
-            <PostList posts={posts} limit={4} showSummary />
-          </div>
-        </section>
-
-        <Divider />
-
         {/* Selected projects */}
         <section aria-labelledby="projects">
           <SectionHeader
             id="projects"
-            label="selected projects"
+            label="some projects"
             href="/projects"
             hrefLabel="all projects"
           />
@@ -159,16 +171,49 @@ export default function HomePage() {
 
         <Divider />
 
-        {/* Closing */}
-        <section className="max-w-prose pb-4">
-          <p className="font-serif text-lg italic text-ink-muted">
-            Thanks for stopping by. If something here resonates, I&rsquo;d love
-            to hear about it —{" "}
-            <a href={`mailto:${site.email}`} className="link not-italic">
-              send a note
-            </a>
-            .
-          </p>
+        {/* Recent kind words — the two most recent endorsements bubble up
+            here from the shared list. The rest live on /endorse. */}
+        <section aria-labelledby="kind-words" className="pb-4">
+          <SectionHeader
+            id="kind-words"
+            label="kind words"
+            href="/endorse"
+            hrefLabel="all endorsements"
+          />
+          <ul className="mt-5 grid gap-4 sm:grid-cols-2">
+            {endorsements.slice(0, 2).map((e) => (
+              <li key={e.id}>
+                <figure
+                  className="flex h-full flex-col rounded-lg border border-rule/70
+                             bg-paper-raised/40 p-5"
+                >
+                  <blockquote
+                    className="relative text-[0.95rem] leading-relaxed text-ink"
+                  >
+                    <span
+                      aria-hidden
+                      className="absolute -left-1 -top-3 select-none font-serif
+                                 text-3xl italic leading-none text-ink-faint/60"
+                    >
+                      &ldquo;
+                    </span>
+                    <span className="block pl-3">{e.body}</span>
+                  </blockquote>
+                  <figcaption
+                    className="mt-4 flex flex-wrap items-baseline justify-between
+                               gap-x-3 gap-y-1 border-t border-rule/60 pt-3"
+                  >
+                    <p className="font-serif text-sm italic text-ink">
+                      {e.name}
+                    </p>
+                    <p className="font-mono text-[10.5px] uppercase tracking-wider text-ink-faint">
+                      {e.relation}
+                    </p>
+                  </figcaption>
+                </figure>
+              </li>
+            ))}
+          </ul>
         </section>
       </div>
     </div>
@@ -207,4 +252,3 @@ function SectionHeader({
     </div>
   );
 }
-

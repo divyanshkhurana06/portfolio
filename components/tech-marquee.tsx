@@ -61,23 +61,35 @@ const TECH: Tech[] = [
   { name: "Git", path: siGit.path },
 ];
 
+// One loop = duplicate the list once, animate the track from 0 → -50%
+// over this duration. Lower number = faster.
+const DURATION_SECONDS = 40;
+
 export function TechMarquee() {
-  // Duplicate exactly once so the CSS keyframe (0 → -50%) loops seamlessly.
+  // Render twice; the second copy makes the seam invisible as the track
+  // loops back to start.
   const items = [...TECH, ...TECH];
 
   return (
-    <section aria-label="A short list of technologies I work with" className="py-2">
+    <section
+      aria-label="A short list of technologies I work with"
+      className="py-2"
+    >
       <div className="container-wide mb-4 flex items-baseline justify-between">
         <p className="eyebrow">tech I reach for</p>
-        <span className="text-xs text-ink-faint">scrolling, gently</span>
+        <span className="hidden text-xs text-ink-faint sm:inline">
+          trying to learn more
+        </span>
       </div>
 
-      <div
-        className="marquee group border-y border-rule/70 bg-paper-raised/40"
-        style={{ ["--marquee-duration" as string]: "75s" }}
-      >
+      <div className="marquee border-y border-rule/70 bg-paper-raised/40 py-5">
         <ul
-          className="marquee-track items-center gap-10 py-5 pl-10"
+          className="marquee-track items-center gap-10"
+          style={
+            {
+              ["--marquee-duration" as string]: `${DURATION_SECONDS}s`,
+            } as React.CSSProperties
+          }
           aria-hidden="true"
         >
           {items.map((t, i) => (
@@ -90,12 +102,13 @@ export function TechMarquee() {
               <span className="font-mono text-[13px] tracking-tight">
                 {t.name}
               </span>
-              <span aria-hidden className="ml-8 text-ink-faint/50">·</span>
+              <span aria-hidden className="ml-8 text-ink-faint/50">
+                ·
+              </span>
             </li>
           ))}
         </ul>
 
-        {/* Visible to screen readers only; the marquee above is decorative. */}
         <p className="sr-only">
           Technologies I work with: {TECH.map((t) => t.name).join(", ")}.
         </p>
@@ -107,11 +120,7 @@ export function TechMarquee() {
 function TechGlyph({ tech }: { tech: Tech }) {
   if ("kind" in tech && tech.kind === "text") {
     return (
-      <svg
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-        className="h-[18px] w-[18px]"
-      >
+      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-[18px] w-[18px]">
         <text
           x="12"
           y="17.5"

@@ -15,11 +15,14 @@ export default function NotFound() {
         <Link href="/" className="link">
           ← back home
         </Link>
-        <Link href="/writing" className="link">
-          read something
-        </Link>
         <Link href="/projects" className="link">
           see projects
+        </Link>
+        <Link href="/gallery" className="link">
+          peek at the gallery
+        </Link>
+        <Link href="/extra" className="link">
+          poke the 3D thing
         </Link>
       </div>
     </div>

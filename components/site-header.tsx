@@ -9,12 +9,10 @@ import { cn } from "@/lib/utils";
 const nav = [
   { href: "/", label: "home" },
   { href: "/about", label: "about" },
-  { href: "/writing", label: "writing" },
   { href: "/projects", label: "projects" },
   { href: "/notes", label: "notes" },
-  { href: "/reading", label: "reading" },
-  { href: "/now", label: "now" },
-  { href: "/uses", label: "uses" },
+  { href: "/gallery", label: "gallery" },
+  { href: "/extra", label: "extra" },
   { href: "/endorse", label: "endorse" },
 ];
 
@@ -31,40 +29,46 @@ export function SiteHeader() {
       >
         Skip to content
       </a>
-      <div className="container-wide flex items-center justify-between gap-4 py-5">
+
+      <div className="container-wide flex items-center justify-between gap-6 py-5">
+        {/* Brand — signature-style: first name in serif, last name in
+            muted italic. The accent dot doubles as a "live" indicator. */}
         <Link
           href="/"
-          className="group inline-flex items-baseline gap-2 text-ink no-underline"
+          aria-label={`${site.name} — home`}
+          className="group inline-flex items-baseline gap-2.5 text-ink no-underline"
         >
           <span
             aria-hidden
-            className="h-2 w-2 rounded-full bg-accent transition-transform
-                       group-hover:scale-125"
+            className="mb-[2px] inline-block h-1.5 w-1.5 rounded-full bg-accent
+                       transition-transform duration-300 group-hover:scale-125"
           />
-          <span className="font-serif text-base font-medium tracking-tight">
-            {site.shortName}
+          <span className="font-serif text-[15px] tracking-tight">
+            <span className="font-medium">Divyansh</span>{" "}
+            <span className="italic text-ink-muted">Khurana</span>
           </span>
-          <span className="text-sm text-ink-faint">.me</span>
         </Link>
 
-        <div className="flex items-center gap-1">
-          <nav aria-label="Primary" className="hidden md:block">
+        {/* Desktop nav + theme toggle */}
+        <div className="hidden items-center gap-2 md:flex">
+          <nav aria-label="Primary">
             <ul className="flex items-center gap-1 text-sm">
               {nav.map((item) => {
                 const active =
                   item.href === "/"
                     ? pathname === "/"
-                    : pathname === item.href || pathname?.startsWith(item.href + "/");
+                    : pathname === item.href ||
+                      pathname?.startsWith(item.href + "/");
                 return (
                   <li key={item.href}>
                     <Link
                       href={item.href}
                       aria-current={active ? "page" : undefined}
                       className={cn(
-                        "rounded-md px-2 py-1 no-underline transition-colors",
+                        "rounded-md px-2.5 py-1.5 no-underline transition-colors",
                         active
-                          ? "text-ink bg-paper-raised"
-                          : "text-ink-muted hover:text-ink hover:bg-paper-raised"
+                          ? "bg-paper-raised text-ink"
+                          : "text-ink-muted hover:bg-paper-raised hover:text-ink"
                       )}
                     >
                       {item.label}
@@ -74,14 +78,22 @@ export function SiteHeader() {
               })}
             </ul>
           </nav>
-          <span aria-hidden className="mx-1 hidden h-4 w-px bg-rule md:block" />
+          <span aria-hidden className="h-4 w-px bg-rule/70" />
+          <ThemeToggle />
+        </div>
+
+        {/* Mobile theme toggle — sits next to brand so it's reachable */}
+        <div className="md:hidden">
           <ThemeToggle />
         </div>
       </div>
 
-      {/* Mobile nav: simple wrap-around row, no JS drawer needed. */}
+      {/* Mobile nav: a thin, tappable strip under the brand row. */}
       <nav aria-label="Primary mobile" className="md:hidden">
-        <ul className="container-wide flex flex-wrap items-center gap-x-3 gap-y-1 pb-4 text-sm">
+        <ul
+          className="container-wide flex flex-wrap items-center gap-x-4 gap-y-1
+                     pb-4 text-[13px]"
+        >
           {nav.map((item) => {
             const active =
               item.href === "/"
@@ -94,7 +106,9 @@ export function SiteHeader() {
                   aria-current={active ? "page" : undefined}
                   className={cn(
                     "no-underline transition-colors",
-                    active ? "text-ink" : "text-ink-muted hover:text-ink"
+                    active
+                      ? "text-ink"
+                      : "text-ink-muted hover:text-ink"
                   )}
                 >
                   {item.label}

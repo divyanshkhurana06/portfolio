@@ -53,14 +53,24 @@ export function ProjectCard({
             ))}
           </div>
 
+          {/* Affordance hint — always visible so the card reads as
+              interactive at a glance. Only shown on hover-capable
+              devices since the flip is gated behind hover too. */}
           <p
-            className="pointer-events-none mt-1 flex items-center gap-1 text-[11px]
-                       text-ink-faint opacity-0 transition-opacity duration-300
-                       group-hover:opacity-100"
+            className="pointer-events-none mt-1 hidden items-center justify-end gap-1
+                       text-[11px] text-ink-faint transition-colors
+                       group-hover:text-ink-muted
+                       [@media(hover:hover)]:flex"
             aria-hidden="true"
           >
             hover for more
-            <span aria-hidden>↺</span>
+            <span
+              aria-hidden
+              className="inline-block transition-transform duration-500
+                         group-hover:rotate-180"
+            >
+              ↺
+            </span>
           </p>
         </article>
 
@@ -70,8 +80,31 @@ export function ProjectCard({
                      rounded-xl border border-rule/70 bg-paper-sunk p-5"
         >
           <div className="flex items-baseline justify-between gap-3">
-            <h3 className="font-serif text-lg font-medium text-ink">
-              {project.name}
+            <h3 className="font-serif text-lg font-medium leading-tight">
+              {project.href || project.repo ? (
+                <a
+                  href={(project.href ?? project.repo) as string}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="group/title inline-flex items-baseline gap-1.5 text-ink
+                             no-underline transition-colors hover:text-accent"
+                >
+                  {project.name}
+                  <span
+                    aria-hidden
+                    className="translate-y-px text-sm text-ink-faint
+                               transition-all duration-200
+                               group-hover/title:-translate-y-0.5
+                               group-hover/title:translate-x-0.5
+                               group-hover/title:text-accent"
+                  >
+                    ↗
+                  </span>
+                  <span className="sr-only"> (opens in a new tab)</span>
+                </a>
+              ) : (
+                <span className="text-ink">{project.name}</span>
+              )}
             </h3>
             <span className="font-mono text-[10px] uppercase tracking-wider text-ink-faint">
               more
