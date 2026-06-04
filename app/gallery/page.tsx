@@ -12,14 +12,11 @@ export default function GalleryPage() {
       <PageHeader
         eyebrow="gallery"
         title="A small collection."
-        lede="Placeholder — something cool is going here. Photos, screenshots, scribbles, whatever feels right."
+        lede="Photos, screenshots, and small experiments — filling in as I go."
       />
 
-      {/* Placeholder grid — replace with real items. The cells are
-          deliberately empty so the layout reads as intentional
-          rather than half-built. */}
       <ul
-        aria-label="Placeholder gallery"
+        aria-label="Gallery grid"
         className="mt-2 grid grid-cols-2 gap-3 sm:grid-cols-3"
       >
         {Array.from({ length: 6 }).map((_, i) => (

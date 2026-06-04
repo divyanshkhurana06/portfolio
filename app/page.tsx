@@ -1,12 +1,17 @@
 import Link from "next/link";
+import { EndorsementCards } from "@/components/endorsement-list";
 import { ProjectCard } from "@/components/project-card";
 import { TechMarquee } from "@/components/tech-marquee";
 import { ResumeButton } from "@/components/resume-button";
-import { projects, notes, endorsements } from "@/lib/content";
+import { projects, notes } from "@/lib/content";
+import { getEndorsements } from "@/lib/data";
 import { site } from "@/lib/site";
 import { formatDateShort } from "@/lib/utils";
 
-export default function HomePage() {
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  const endorsements = await getEndorsements(2);
   return (
     <div className="pt-12 sm:pt-16">
       {/* Intro */}
@@ -180,40 +185,16 @@ export default function HomePage() {
             href="/endorse"
             hrefLabel="all endorsements"
           />
-          <ul className="mt-5 grid gap-4 sm:grid-cols-2">
-            {endorsements.slice(0, 2).map((e) => (
-              <li key={e.id}>
-                <figure
-                  className="flex h-full flex-col rounded-lg border border-rule/70
-                             bg-paper-raised/40 p-5"
-                >
-                  <blockquote
-                    className="relative text-[0.95rem] leading-relaxed text-ink"
-                  >
-                    <span
-                      aria-hidden
-                      className="absolute -left-1 -top-3 select-none font-serif
-                                 text-3xl italic leading-none text-ink-faint/60"
-                    >
-                      &ldquo;
-                    </span>
-                    <span className="block pl-3">{e.body}</span>
-                  </blockquote>
-                  <figcaption
-                    className="mt-4 flex flex-wrap items-baseline justify-between
-                               gap-x-3 gap-y-1 border-t border-rule/60 pt-3"
-                  >
-                    <p className="font-serif text-sm italic text-ink">
-                      {e.name}
-                    </p>
-                    <p className="font-mono text-[10.5px] uppercase tracking-wider text-ink-faint">
-                      {e.relation}
-                    </p>
-                  </figcaption>
-                </figure>
-              </li>
-            ))}
-          </ul>
+          <EndorsementCards endorsements={endorsements} />
+          {endorsements.length === 0 && (
+            <p className="mt-2 text-sm text-ink-muted">
+              No endorsements yet —{" "}
+              <Link href="/endorse" className="link">
+                leave the first one
+              </Link>
+              .
+            </p>
+          )}
         </section>
       </div>
     </div>

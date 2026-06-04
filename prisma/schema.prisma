@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Endorsement {
+  id        String   @id @default(cuid())
+  name      String
+  relation  String
+  body      String
+  createdAt DateTime @default(now())
+
+  @@index([createdAt(sort: Desc)])
+}
+
+model WhiteboardStroke {
+  id        String   @id @default(cuid())
+  x1        Float
+  y1        Float
+  x2        Float
+  y2        Float
+  color     String
+  width     Float    @default(2)
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}

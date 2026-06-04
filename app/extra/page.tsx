@@ -12,13 +12,13 @@ import {
 const GEOGUESSR_PIN_PATH =
   "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z";
 import { ExtraSceneClient } from "@/components/extra-scene-client";
-import { Whiteboard } from "@/components/whiteboard";
+import { FlappyTech } from "@/components/flappy-tech";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Extra",
   description:
-    "A small corner of the site for the non-resume bits — an interactive WebGL field, plus where I'm reachable off-site.",
+    "A small corner of the site — interactive WebGL field, a tech-themed mini-game, and where I'm reachable off-site.",
 };
 
 /* -------------------------------------------------------------------------- */
@@ -32,7 +32,7 @@ export default function ExtraPage() {
   return (
     <div className="pt-6 sm:pt-8">
       <section
-        aria-label="Interactive cursor field and whiteboard"
+        aria-label="Interactive cursor field and Flappy Tech game"
         className="container-wide"
       >
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -42,7 +42,7 @@ export default function ExtraPage() {
           >
             <ExtraSceneClient />
           </div>
-          <Whiteboard />
+          <FlappyTech />
         </div>
       </section>
 
