@@ -1,4 +1,8 @@
+"use client";
+
 import type { Project } from "@/lib/content";
+import { cn } from "@/lib/utils";
+import { useCallback, useEffect, useState } from "react";
 
 /** Primary outbound link for the back-face title arrow. */
 function primaryLink(project: Project): { href: string; label: string } | null {
@@ -27,9 +31,59 @@ export function ProjectCard({
 }) {
   const stackLimit = variant === "compact" ? 3 : undefined;
   const primary = primaryLink(project);
+  const [flipped, setFlipped] = useState(false);
+  const [touchFlip, setTouchFlip] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(hover: none)");
+    const sync = () => setTouchFlip(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
+  const toggleFlip = useCallback(() => {
+    if (!touchFlip) return;
+    setFlipped((f) => !f);
+  }, [touchFlip]);
+
+  const onCardClick = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (!touchFlip) return;
+      if ((e.target as HTMLElement).closest("a")) return;
+      toggleFlip();
+    },
+    [touchFlip, toggleFlip]
+  );
+
+  const onCardKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (!touchFlip) return;
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toggleFlip();
+      }
+    },
+    [touchFlip, toggleFlip]
+  );
 
   return (
-    <div className="flip-card group h-full min-h-[240px]">
+    <div
+      className={cn(
+        "flip-card group h-full min-h-[240px]",
+        touchFlip && flipped && "is-flipped"
+      )}
+      onClick={onCardClick}
+      onKeyDown={onCardKeyDown}
+      role={touchFlip ? "button" : undefined}
+      tabIndex={touchFlip ? 0 : undefined}
+      aria-expanded={touchFlip ? flipped : undefined}
+      aria-label={
+        touchFlip
+          ? `${project.name}. Tap to ${flipped ? "hide" : "show"} more details.`
+          : undefined
+      }
+    >
       <div className="flip-card-inner">
         {/* Front */}
         <article
@@ -63,21 +117,19 @@ export function ProjectCard({
             ))}
           </div>
 
-          {/* Affordance hint — always visible so the card reads as
-              interactive at a glance. Only shown on hover-capable
-              devices since the flip is gated behind hover too. */}
           <p
-            className="pointer-events-none mt-1 hidden items-center justify-end gap-1
-                       text-[11px] text-ink-faint transition-colors
-                       group-hover:text-ink-muted
-                       [@media(hover:hover)]:flex"
+            className="pointer-events-none mt-1 flex items-center justify-end gap-1
+                       text-[11px] text-ink-faint"
             aria-hidden="true"
           >
-            hover for more
+            <span className="[@media(hover:hover)]:hidden">tap for more</span>
+            <span className="hidden [@media(hover:hover)]:inline">hover for more</span>
             <span
               aria-hidden
-              className="inline-block transition-transform duration-500
-                         group-hover:rotate-180"
+              className={cn(
+                "inline-block transition-transform duration-500 group-hover:rotate-180",
+                touchFlip && flipped && "rotate-180"
+              )}
             >
               ↺
             </span>
@@ -192,6 +244,12 @@ export function ProjectCard({
                 </a>
               ) : null}
             </div>
+          ) : null}
+
+          {touchFlip ? (
+            <p className="pointer-events-none text-right text-[10px] text-ink-faint">
+              tap again to flip back
+            </p>
           ) : null}
         </article>
       </div>

@@ -175,6 +175,13 @@
   }
 }
 
+/* Touch / coarse pointer — flip toggled via .is-flipped from ProjectCard */
+@media (hover: none) {
+  .flip-card.is-flipped .flip-card-inner {
+    transform: rotateY(180deg);
+  }
+}
+
 .flip-face {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;

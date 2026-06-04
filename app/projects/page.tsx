@@ -16,7 +16,7 @@ export default function ProjectsPage() {
       <PageHeader
         eyebrow="projects"
         title="Things I've made."
-        lede="A working list of the projects I've shipped, am still shipping, or quietly let drift into the archive. Hover over a card to see a bit more. Most of them taught me something."
+        lede="A working list of the projects I've shipped, am still shipping, or quietly let drift into the archive. Tap or hover a card to see a bit more. Most of them taught me something."
       />
 
       <ul className="grid gap-5 sm:grid-cols-2">
