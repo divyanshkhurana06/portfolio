@@ -1,3 +1,4 @@
+import { ensureDb } from "@/lib/ensure-db";
 import { prisma } from "@/lib/prisma";
 
 export type EndorsementRecord = {
@@ -20,18 +21,24 @@ export type WhiteboardStrokeRecord = {
 };
 
 export async function getEndorsements(limit?: number): Promise<EndorsementRecord[]> {
-  const rows = await prisma.endorsement.findMany({
-    orderBy: { createdAt: "desc" },
-    take: limit,
-  });
+  try {
+    await ensureDb();
+    const rows = await prisma.endorsement.findMany({
+      orderBy: { createdAt: "desc" },
+      take: limit,
+    });
 
-  return rows.map((row) => ({
+    return rows.map((row) => ({
     id: row.id,
     name: row.name,
     relation: row.relation,
     body: row.body,
     date: row.createdAt.toISOString().slice(0, 10),
-  }));
+    }));
+  } catch (error) {
+    console.error("getEndorsements", error);
+    return [];
+  }
 }
 
 export async function createEndorsement(data: {
@@ -39,6 +46,7 @@ export async function createEndorsement(data: {
   relation: string;
   body: string;
 }): Promise<EndorsementRecord> {
+  await ensureDb();
   const row = await prisma.endorsement.create({ data });
   return {
     id: row.id,
@@ -52,6 +60,12 @@ export async function createEndorsement(data: {
 export async function getWhiteboardStrokes(
   since?: string
 ): Promise<WhiteboardStrokeRecord[]> {
+  try {
+    await ensureDb();
+  } catch (error) {
+    console.error("getWhiteboardStrokes ensureDb", error);
+    return [];
+  }
   const sinceDate = since ? new Date(since) : null;
   const validSince =
     sinceDate && !Number.isNaN(sinceDate.getTime()) ? sinceDate : null;
@@ -82,6 +96,7 @@ export async function createWhiteboardStroke(data: {
   color: string;
   width: number;
 }): Promise<WhiteboardStrokeRecord> {
+  await ensureDb();
   const row = await prisma.whiteboardStroke.create({ data });
   return {
     id: row.id,
@@ -96,5 +111,6 @@ export async function createWhiteboardStroke(data: {
 }
 
 export async function clearWhiteboard(): Promise<void> {
+  await ensureDb();
   await prisma.whiteboardStroke.deleteMany();
 }
