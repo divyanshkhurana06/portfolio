@@ -1,5 +1,14 @@
 import type { Project } from "@/lib/content";
 
+/** Primary outbound link for the back-face title arrow. */
+function primaryLink(project: Project): { href: string; label: string } | null {
+  const first = project.links?.[0];
+  if (first) return { href: first.href, label: first.label };
+  if (project.href) return { href: project.href, label: "Live" };
+  if (project.repo) return { href: project.repo, label: "Source" };
+  return null;
+}
+
 const statusTone: Record<string, string> = {
   shipped: "bg-accent-soft text-accent",
   "in progress": "bg-paper-sunk text-ink",
@@ -17,6 +26,7 @@ export function ProjectCard({
   variant?: Variant;
 }) {
   const stackLimit = variant === "compact" ? 3 : undefined;
+  const primary = primaryLink(project);
 
   return (
     <div className="flip-card group h-full min-h-[240px]">
@@ -81,9 +91,9 @@ export function ProjectCard({
         >
           <div className="flex items-baseline justify-between gap-3">
             <h3 className="font-serif text-lg font-medium leading-tight">
-              {project.href || project.repo ? (
+              {primary ? (
                 <a
-                  href={(project.href ?? project.repo) as string}
+                  href={primary.href}
                   target="_blank"
                   rel="noreferrer noopener"
                   className="group/title inline-flex items-baseline gap-1.5 text-ink
@@ -139,7 +149,7 @@ export function ProjectCard({
             </p>
           ) : null}
 
-          {project.href || project.repo ? (
+          {project.href || project.repo || project.links?.length ? (
             <div className="mt-auto flex flex-wrap gap-x-4 gap-y-1 pt-1 text-sm">
               {project.href ? (
                 <a
@@ -154,6 +164,20 @@ export function ProjectCard({
                   </span>
                 </a>
               ) : null}
+              {project.links?.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="link-quiet"
+                >
+                  {link.label}{" "}
+                  <span aria-hidden className="text-ink-faint">
+                    ↗
+                  </span>
+                </a>
+              ))}
               {project.repo ? (
                 <a
                   href={project.repo}

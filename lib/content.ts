@@ -8,6 +8,8 @@ export type Project = {
   status: "shipped" | "in progress" | "archived" | "exploring";
   href?: string;
   repo?: string;
+  /** Extra outbound links (e.g. hackathon showcase). */
+  links?: { label: string; href: string }[];
   stack?: string[];
   details?: {
     role?: string;
@@ -27,18 +29,23 @@ export const projects: Project[] = [
     slug: "interact",
     name: "Interact",
     blurb:
-      "A full-stack dApp that lets users spend crypto on real-world things — food delivery, flights, shopping — through LLM-based AI agents and virtual credit cards. Escrow smart contracts handle trustless payments with dual attestation and time-based fallback. Won ETHGlobal Prague.",
+      "A full stack dApp that lets users spend crypto on real world things food delivery, flights, shopping through LLM based AI agents and virtual credit cards. Escrow smart contracts handle trustless payments with dual attestation and time based fallback. Won ETHGlobal Prague.",
     year: 2025,
     status: "shipped",
-    href: "https://ethglobal.com/showcase",
-    repo: "https://github.com/divyanshkhurana06",
+    repo: "https://github.com/vectorthrust/Interact",
+    links: [
+      {
+        label: "Showcase",
+        href: "https://ethglobal.com/showcase/interact-9qtx7",
+      },
+    ],
     stack: ["Next.js", "React", "FastAPI", "LangChain", "Solidity", "WebSockets"],
     details: {
-      role: "Hackathon team — full-stack + smart contracts",
+      role: "Hackathon team: full stack + smart contracts",
       highlights: [
         "Won ETHGlobal Prague",
-        "Escrow with dual attestation & time-based fallback",
-        "Real-time agent execution via FastAPI + WebSockets",
+        "Escrow with dual attestation & time based fallback",
+        "Real time agent execution via FastAPI + WebSockets",
       ],
     },
   },
@@ -46,16 +53,15 @@ export const projects: Project[] = [
     slug: "mailed",
     name: "Mailed",
     blurb:
-      "A Chrome extension for email tracking with real-time analytics and AI-based categorization. Responsive React + TypeScript dashboard, Node.js + Supabase backend, Hugging Face for categorization, Google OAuth for sign-in.",
+      "A Chrome extension for email tracking with real time analytics and AI based categorization. Responsive React + TypeScript dashboard, Node.js + Supabase backend, Hugging Face for categorization, Google OAuth for sign in.",
     year: 2025,
     status: "shipped",
-    href: "https://chromewebstore.google.com",
-    repo: "https://github.com/divyanshkhurana06",
+    repo: "https://github.com/divyanshkhurana06/mailed0",
     stack: ["React", "TypeScript", "Tailwind", "Node.js", "Supabase", "Hugging Face"],
     details: {
       role: "Solo build",
       highlights: [
-        "Real-time email tracking from inside Gmail",
+        "Real time email tracking from inside Gmail",
         "AI categorization via Hugging Face",
         "Google OAuth + Node.js + Supabase backend",
       ],
@@ -77,7 +83,7 @@ export const notes: Note[] = [
   {
     id: "n-003",
     date: "2026-04-29",
-    body: "New notebook arrived. Filling the first page is the hardest part — wrote down today's date and called it progress.",
+    body: "New notebook arrived. Filling the first page is the hardest part wrote down today's date and called it progress.",
   },
   {
     id: "n-002",

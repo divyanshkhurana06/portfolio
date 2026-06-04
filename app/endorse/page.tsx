@@ -8,7 +8,7 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Endorse",
   description:
-    "Kind words from people I've worked with — collaborators, teammates, anyone with a thoughtful note to leave.",
+    "Endorsement from people I've worked with: collaborators, teammates or anyone with a thoughtful note to leave. 😁",
 };
 
 export const dynamic = "force-dynamic";
@@ -20,8 +20,8 @@ export default async function EndorsePage() {
     <div className="container-prose pt-12 sm:pt-16">
       <PageHeader
         eyebrow="endorse"
-        title="Kind words."
-        lede="If we've worked together — on a project, an internship, a hackathon, a class — leave a short note here. It shows up right away."
+        title="Review."
+        lede="If we've worked together on a project, an internship, a hackathon, or even in a class: just leave a short note here."
       />
 
       <EndorseForm />

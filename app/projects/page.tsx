@@ -5,7 +5,7 @@ import { projects } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Projects",
-  description: "Selected things I've built — shipped, in progress, and otherwise.",
+  description: "Selected things I've built shipped, in progress, and otherwise.",
 };
 
 export default function ProjectsPage() {

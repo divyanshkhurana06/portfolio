@@ -79,7 +79,7 @@ export default function AboutPage() {
       {/* Recognition */}
       <Section title="a thing I'm proud of">
         <p className="text-[0.95rem] leading-[1.7] text-ink-muted">
-          <strong className="text-ink">Interact</strong> — winner at ETHGlobal
+          <strong className="text-ink">Interact</strong>: winner at ETHGlobal
           Prague. An AI agent that talks to smart contracts in plain English.
           See <a href="/projects" className="link">projects</a> for the rest.
         </p>
@@ -114,7 +114,7 @@ export default function AboutPage() {
       {/* Contact */}
       <Section title="get in touch">
         <p className="text-[0.95rem] leading-[1.7] text-ink-muted">
-          Email is best — <a href={`mailto:${site.email}`} className="link">{site.email}</a>.
+          Email is best: <a href={`mailto:${site.email}`} className="link">{site.email}</a>.
           I&rsquo;m also on{" "}
           <a
             href={site.social.github}

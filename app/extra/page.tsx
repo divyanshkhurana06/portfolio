@@ -1,11 +1,5 @@
 import type { Metadata } from "next";
-import {
-  siChessdotcom,
-  siDiscord,
-  siSpotify,
-  siSteam,
-  siX,
-} from "simple-icons";
+import { siChessdotcom, siDiscord, siSpotify, siSteam, siX } from "simple-icons";
 
 // GeoGuessr isn't in simple-icons yet, so we inline a location-pin glyph
 // — conceptually obvious for a "guess where in the world" platform.
@@ -18,7 +12,7 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Extra",
   description:
-    "A small corner of the site — interactive WebGL field, a tech-themed mini-game, and where I'm reachable off-site.",
+    "",
 };
 
 /* -------------------------------------------------------------------------- */
@@ -56,7 +50,7 @@ export default function ExtraPage() {
               elsewhere
             </h2>
             <p className="text-xs text-ink-faint">
-              the non-resume corners of the internet
+              
             </p>
           </header>
 
@@ -94,8 +88,6 @@ export default function ExtraPage() {
               blurb={site.extras.x.blurb}
               href={site.extras.x.url}
             />
-            {/* Spotify takes the full width on the last row — gives the
-                music card a little more breathing room than the rest. */}
             <PlatformCard
               icon={siSpotify.path}
               brandColor="#1db954"
@@ -103,7 +95,6 @@ export default function ExtraPage() {
               handle={site.extras.spotify.handle}
               blurb={site.extras.spotify.blurb}
               href={site.extras.spotify.url}
-              className="sm:col-span-2"
             />
           </ul>
         </section>

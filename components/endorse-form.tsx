@@ -41,7 +41,7 @@ export function EndorseForm() {
       setSuccess(true);
       router.refresh();
     } catch {
-      setError("Network error — try again in a moment.");
+      setError("Network error: try again in a moment.");
     } finally {
       setPending(false);
     }
@@ -79,6 +79,8 @@ export function EndorseForm() {
             minLength={2}
             maxLength={80}
             autoComplete="name"
+            placeholder="xxx"
+
             disabled={pending}
             className="w-full rounded-md border border-rule bg-paper px-3 py-2 text-sm
                        text-ink placeholder:text-ink-faint focus:border-accent focus:outline-none
@@ -100,7 +102,7 @@ export function EndorseForm() {
             minLength={2}
             maxLength={120}
             disabled={pending}
-            placeholder="Hackathon teammate, internship lead, class project…"
+            placeholder="Hackathon teammate, internship lead, class project etc."
             className="w-full rounded-md border border-rule bg-paper px-3 py-2 text-sm
                        text-ink placeholder:text-ink-faint focus:border-accent focus:outline-none
                        disabled:opacity-60"
@@ -121,7 +123,7 @@ export function EndorseForm() {
             minLength={10}
             maxLength={1000}
             disabled={pending}
-            placeholder="A short, specific note. Two or three sentences is plenty."
+            placeholder="A short, specific note. Two or three sentences is enough Thanks!!."
             className="w-full resize-y rounded-md border border-rule bg-paper px-3 py-2 text-sm
                        text-ink placeholder:text-ink-faint focus:border-accent focus:outline-none
                        disabled:opacity-60"
@@ -134,11 +136,10 @@ export function EndorseForm() {
             </p>
           ) : success ? (
             <p className="text-xs text-accent" role="status">
-              Thanks — your note is live.
+              Thanks: your note is live.
             </p>
           ) : (
             <p className="text-xs text-ink-faint">
-              Saved immediately · no account needed
             </p>
           )}
           <button

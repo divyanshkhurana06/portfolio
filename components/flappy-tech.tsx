@@ -2,44 +2,12 @@
 
 import { useTheme } from "next-themes";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { site } from "@/lib/site";
-
 /* -------------------------------------------------------------------------- */
 /*  Flappy Tech — flap through merge gates & API pillars. Score = deploys.    */
 /*  Theme-aware (paper / ink / amber). Best score in localStorage.            */
 /* -------------------------------------------------------------------------- */
 
 const BEST_KEY = "flappy-tech:best";
-
-/** Obstacle labels — your stack, projects, and dev in-jokes. */
-const GATE_LABELS = [
-  "React",
-  "Next.js",
-  "TypeScript",
-  "Python",
-  "Solidity",
-  "FastAPI",
-  "Prisma",
-  "Postgres",
-  "LangChain",
-  "Interact",
-  "Mailed",
-  "ETHGlobal",
-  "git push",
-  "npm run build",
-  "docker pull",
-  "merge conflict",
-  "502 Bad Gateway",
-  "VIT CSE",
-  "Powergrid",
-  "WebGL",
-  "Supabase",
-  "TensorFlow",
-  "IPFS",
-  "Node.js",
-  "Tailwind",
-  "MongoDB",
-] as const;
 
 type Palette = {
   paper: string;
@@ -57,7 +25,6 @@ type Obstacle = {
   x: number;
   gapCenter: number;
   gapSize: number;
-  label: string;
   scored: boolean;
 };
 
@@ -109,7 +76,6 @@ export function FlappyTech() {
   const sizeRef = useRef({ w: 0, h: 0, dpr: 1 });
   const paletteRef = useRef<Palette>(DEFAULT_PALETTE);
   const starsRef = useRef<{ x: number; y: number; s: number; sp: number }[]>([]);
-  const labelIdxRef = useRef(0);
   const bestRef = useRef(0);
 
   const { resolvedTheme } = useTheme();
@@ -119,29 +85,25 @@ export function FlappyTech() {
     phaseRef.current = p;
   };
 
-  const nextLabel = () => {
-    const label = GATE_LABELS[labelIdxRef.current % GATE_LABELS.length]!;
-    labelIdxRef.current += 1;
-    return label;
-  };
-
   const resetGame = useCallback((h: number) => {
-    birdRef.current = { y: h * 0.42, vy: 0, rot: 0 };
+    birdRef.current = { y: h / 2, vy: 0, rot: 0 };
     obstaclesRef.current = [];
     scoreRef.current = 0;
     frameRef.current = 0;
   }, []);
 
   const spawnObstacle = useCallback((w: number, h: number, offsetX: number) => {
-    const gapSize = Math.min(150, Math.max(108, h * 0.28));
-    const margin = gapSize * 0.55;
+    // Same fly-through height every gate; only vertical position moves (bar heights vary)
+    const gapSize = Math.min(148, Math.max(118, h * 0.28));
+    const edgePad = 40;
     const gapCenter =
-      margin + Math.random() * (h - gapSize - margin * 2);
+      edgePad +
+      gapSize / 2 +
+      Math.random() * Math.max(0, h - gapSize - edgePad * 2);
     obstaclesRef.current.push({
       x: offsetX,
       gapCenter,
       gapSize,
-      label: nextLabel(),
       scored: false,
     });
   }, []);
@@ -273,44 +235,50 @@ export function FlappyTech() {
       topH: number,
       bottomY: number,
       h: number,
-      label: string,
       isTop: boolean
     ) => {
       const p = paletteRef.current;
       const pw = 52;
+      const barH = isTop ? topH : h - bottomY;
+      const barY = isTop ? 0 : bottomY;
+      const gateText = isTop ? "please" : "hire me";
 
       ctx.fillStyle = p.paperRaised;
       ctx.strokeStyle = p.rule;
       ctx.lineWidth = 2;
-      if (isTop) {
-        ctx.fillRect(x, 0, pw, topH);
-        ctx.strokeRect(x, 0, pw, topH);
-      } else {
-        ctx.fillRect(x, bottomY, pw, h - bottomY);
-        ctx.strokeRect(x, bottomY, pw, h - bottomY);
-      }
+      ctx.fillRect(x, barY, pw, barH);
+      ctx.strokeRect(x, barY, pw, barH);
 
       // Amber accent edge (deploy pipeline stripe)
       ctx.fillStyle = p.accent;
       ctx.globalAlpha = 0.85;
-      if (isTop) {
-        ctx.fillRect(x + pw - 4, 0, 4, topH);
-      } else {
-        ctx.fillRect(x + pw - 4, bottomY, 4, h - bottomY);
-      }
+      ctx.fillRect(x + pw - 4, barY, 4, barH);
       ctx.globalAlpha = 1;
 
-      // Label chip on the gap-facing edge
-      ctx.fillStyle = p.ink;
-      ctx.font = "600 9px ui-monospace, SFMono-Regular, Menlo, monospace";
-      const chipY = isTop ? topH - 18 : bottomY + 6;
+      // Gate label on the gap-facing cap — only if the bar is tall enough
+      if (barH < 28) return;
+
+      ctx.font = "600 10px ui-monospace, SFMono-Regular, Menlo, monospace";
+      const chipH = 16;
+      const chipPad = 6;
+      const tw = Math.min(ctx.measureText(gateText).width + chipPad * 2, pw - 4);
+      const chipX = x + (pw - tw) / 2;
+      const chipY = isTop ? topH - chipH - 4 : bottomY + 4;
+
       ctx.fillStyle = p.accentSoft;
-      ctx.globalAlpha = 0.95;
-      const tw = ctx.measureText(label).width + 10;
-      ctx.fillRect(x + 4, chipY, tw, 14);
+      ctx.globalAlpha = 0.98;
+      ctx.fillRect(chipX, chipY, tw, chipH);
       ctx.globalAlpha = 1;
-      ctx.fillStyle = p.ink;
-      ctx.fillText(label, x + 9, chipY + 10);
+      ctx.strokeStyle = p.accent;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(chipX + 0.5, chipY + 0.5, tw - 1, chipH - 1);
+
+      ctx.fillStyle = p.accent;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(gateText, x + pw / 2, chipY + chipH / 2);
+      ctx.textAlign = "left";
+      ctx.textBaseline = "alphabetic";
     };
 
     const drawBird = (
@@ -421,7 +389,7 @@ export function FlappyTech() {
           syncPhase("dead");
         }
       } else if (phase === "idle") {
-        bird.y = h * 0.42 + Math.sin(frameRef.current * 0.04) * 6;
+        bird.y = h / 2 + Math.sin(frameRef.current * 0.04) * 6;
         bird.rot = 0;
       }
 
@@ -431,29 +399,22 @@ export function FlappyTech() {
       for (const obs of obstaclesRef.current) {
         const topH = obs.gapCenter - obs.gapSize / 2;
         const bottomY = obs.gapCenter + obs.gapSize / 2;
-        drawPillar(ctx, obs.x, topH, bottomY, h, obs.label, true);
-        drawPillar(ctx, obs.x, topH, bottomY, h, obs.label, false);
+        drawPillar(ctx, obs.x, topH, bottomY, h, true);
+        drawPillar(ctx, obs.x, topH, bottomY, h, false);
       }
 
       drawBird(ctx, bird.y, bird.rot);
 
-      // HUD
+      // Score — tucked under the top bar, top-right
       const p = paletteRef.current;
+      ctx.textAlign = "right";
       ctx.fillStyle = p.ink;
       ctx.font = "600 11px ui-monospace, monospace";
-      ctx.fillText(`deploys ${scoreRef.current}`, 12, 22);
+      ctx.fillText(`deploys ${scoreRef.current}`, w - 10, 18);
       ctx.fillStyle = p.inkFaint;
       ctx.font = "10px ui-monospace, monospace";
-      ctx.fillText(`best ${bestRef.current}`, 12, 36);
-
-      // Watermark — your handle
-      ctx.fillStyle = p.inkFaint;
-      ctx.globalAlpha = 0.45;
-      ctx.font = "italic 11px ui-serif, Georgia, serif";
-      ctx.textAlign = "right";
-      ctx.fillText(site.shortName, w - 12, h - 12);
+      ctx.fillText(`best ${bestRef.current}`, w - 10, 32);
       ctx.textAlign = "left";
-      ctx.globalAlpha = 1;
 
       // Overlays
       if (phase === "idle") {
@@ -524,13 +485,6 @@ export function FlappyTech() {
         role="img"
         aria-label="Flappy Tech game canvas. Press space or tap to flap."
       />
-
-      <p
-        className="pointer-events-none absolute left-4 top-3 font-mono text-[10.5px]
-                   uppercase tracking-[0.14em] text-ink-faint"
-      >
-        flappy tech · {site.shortName}
-      </p>
     </section>
   );
 }
