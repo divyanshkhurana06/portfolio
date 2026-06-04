@@ -3,7 +3,7 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Html, OrbitControls } from "@react-three/drei";
 import { useTheme } from "next-themes";
-import { Suspense, useMemo, useRef } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import {
   Color,
   type InstancedMesh,
@@ -154,18 +154,48 @@ function Loader() {
 }
 
 export function ExtraScene() {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(true);
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
 
   const bg = isDark ? "#0c0b0a" : "#eeeae0";
   const groundColor = isDark ? "#141211" : "#e2dbcb";
 
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+
+    const sync = (visible: boolean) => {
+      setActive(visible && !document.hidden);
+    };
+
+    const io = new IntersectionObserver(
+      ([entry]) => sync(entry?.isIntersecting ?? true),
+      { threshold: 0.08 }
+    );
+    io.observe(el);
+
+    const onVisibility = () => sync(
+      (wrapRef.current?.getBoundingClientRect().bottom ?? 1) > 0 &&
+        (wrapRef.current?.getBoundingClientRect().top ?? 0) < window.innerHeight
+    );
+    document.addEventListener("visibilitychange", onVisibility);
+
+    return () => {
+      io.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, []);
+
   return (
+    <div ref={wrapRef} className="h-full w-full">
     <Canvas
+      frameloop={active ? "always" : "never"}
       shadows
-      dpr={[1, 2]}
+      dpr={[1, 1.5]}
       camera={{ position: [0, 3.2, 5.4], fov: 38 }}
-      gl={{ antialias: true, alpha: false }}
+      gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
     >
       <color attach="background" args={[bg]} />
       <fog attach="fog" args={[bg, 5.5, 13]} />
@@ -175,7 +205,7 @@ export function ExtraScene() {
         position={[3, 8, 4]}
         intensity={isDark ? 1.1 : 1.45}
         castShadow
-        shadow-mapSize={[2048, 2048]}
+        shadow-mapSize={[1024, 1024]}
         shadow-camera-near={1}
         shadow-camera-far={20}
         shadow-camera-left={-6}
@@ -203,6 +233,7 @@ export function ExtraScene() {
         rotateSpeed={0.6}
       />
     </Canvas>
+    </div>
   );
 }
 

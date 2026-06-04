@@ -1,13 +1,14 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 /* -------------------------------------------------------------------------- */
-/*  Flappy Tech — flap through merge gates & API pillars. Score = deploys.    */
-/*  Theme-aware (paper / ink / amber). Best score in localStorage.            */
+/*  Flappy Tech — flap through merge gates. Score = deploys.                  */
 /* -------------------------------------------------------------------------- */
 
 const BEST_KEY = "flappy-tech:best";
+const GATE_TOP = "please";
+const GATE_BOTTOM = "hire me";
 
 type Palette = {
   paper: string;
@@ -64,10 +65,17 @@ function readPalette(): Palette {
   };
 }
 
+function gameDpr(): number {
+  const raw = window.devicePixelRatio || 1;
+  const narrow = window.matchMedia("(max-width: 640px)").matches;
+  return narrow ? 1 : Math.min(raw, 1.5);
+}
+
 export function FlappyTech() {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef(0);
+  const activeRef = useRef(true);
   const phaseRef = useRef<GamePhase>("idle");
   const birdRef = useRef({ y: 0, vy: 0, rot: 0 });
   const obstaclesRef = useRef<Obstacle[]>([]);
@@ -75,11 +83,10 @@ export function FlappyTech() {
   const frameRef = useRef(0);
   const sizeRef = useRef({ w: 0, h: 0, dpr: 1 });
   const paletteRef = useRef<Palette>(DEFAULT_PALETTE);
-  const starsRef = useRef<{ x: number; y: number; s: number; sp: number }[]>([]);
   const bestRef = useRef(0);
+  const bgKeyRef = useRef("");
 
   const { resolvedTheme } = useTheme();
-  const [best, setBest] = useState(0);
 
   const syncPhase = (p: GamePhase) => {
     phaseRef.current = p;
@@ -93,7 +100,6 @@ export function FlappyTech() {
   }, []);
 
   const spawnObstacle = useCallback((w: number, h: number, offsetX: number) => {
-    // Same fly-through height every gate; only vertical position moves (bar heights vary)
     const gapSize = Math.min(148, Math.max(118, h * 0.28));
     const edgePad = 40;
     const gapCenter =
@@ -126,28 +132,16 @@ export function FlappyTech() {
   }, [resetGame]);
 
   useEffect(() => {
-    try {
-      const b = window.localStorage.getItem(BEST_KEY);
-      if (b) {
-        const n = Number(b);
-        setBest(n);
-        bestRef.current = n;
-      }
-    } catch {
-      /* ignore */
-    }
-  }, []);
-
-  useEffect(() => {
-    bestRef.current = best;
-  }, [best]);
-
-  useEffect(() => {
     paletteRef.current = readPalette();
   }, [resolvedTheme]);
 
   useEffect(() => {
-    paletteRef.current = readPalette();
+    try {
+      const b = window.localStorage.getItem(BEST_KEY);
+      if (b) bestRef.current = Number(b) || 0;
+    } catch {
+      /* ignore */
+    }
   }, []);
 
   useEffect(() => {
@@ -159,24 +153,53 @@ export function FlappyTech() {
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
+    const bgCanvas = document.createElement("canvas");
+    let bgCtx: CanvasRenderingContext2D | null = null;
+
+    const paintBackground = (w: number, h: number, dpr: number) => {
+      const p = paletteRef.current;
+      const key = `${w}x${h}@${dpr}:${p.paperSunk}`;
+      if (key === bgKeyRef.current && bgCanvas.width > 0) return;
+
+      bgCanvas.width = Math.floor(w * dpr);
+      bgCanvas.height = Math.floor(h * dpr);
+      bgCtx = bgCanvas.getContext("2d");
+      if (!bgCtx) return;
+
+      bgCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      bgCtx.fillStyle = p.paperSunk;
+      bgCtx.fillRect(0, 0, w, h);
+
+      // Sparse grid — one path, fewer lines than per-frame strokes
+      bgCtx.strokeStyle = p.rule;
+      bgCtx.globalAlpha = 0.28;
+      bgCtx.lineWidth = 1;
+      bgCtx.beginPath();
+      const grid = 56;
+      for (let x = 0; x <= w; x += grid) {
+        bgCtx.moveTo(x, 0);
+        bgCtx.lineTo(x, h);
+      }
+      for (let y = 0; y <= h; y += grid) {
+        bgCtx.moveTo(0, y);
+        bgCtx.lineTo(w, y);
+      }
+      bgCtx.stroke();
+      bgCtx.globalAlpha = 1;
+      bgKeyRef.current = key;
+    };
+
     const resize = () => {
       const rect = container.getBoundingClientRect();
       if (rect.width < 2 || rect.height < 2) return;
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = gameDpr();
       canvas.width = Math.floor(rect.width * dpr);
       canvas.height = Math.floor(rect.height * dpr);
       canvas.style.width = `${rect.width}px`;
       canvas.style.height = `${rect.height}px`;
       sizeRef.current = { w: rect.width, h: rect.height, dpr };
-
-      if (starsRef.current.length === 0) {
-        starsRef.current = Array.from({ length: 28 }, () => ({
-          x: Math.random() * rect.width,
-          y: Math.random() * rect.height,
-          s: 0.6 + Math.random() * 1.4,
-          sp: 0.15 + Math.random() * 0.35,
-        }));
-      }
+      bgKeyRef.current = "";
+      paintBackground(rect.width, rect.height, dpr);
 
       if (phaseRef.current === "idle") {
         resetGame(rect.height);
@@ -187,47 +210,35 @@ export function FlappyTech() {
     const ro = new ResizeObserver(resize);
     ro.observe(container);
 
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        activeRef.current = entry?.isIntersecting ?? true;
+      },
+      { rootMargin: "40px", threshold: 0.05 }
+    );
+    io.observe(container);
+
+    const onVisibility = () => {
+      if (document.hidden) activeRef.current = false;
+      else {
+        const rect = container.getBoundingClientRect();
+        const inView =
+          rect.bottom > 0 &&
+          rect.top < window.innerHeight &&
+          rect.right > 0 &&
+          rect.left < window.innerWidth;
+        activeRef.current = inView;
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
     const GRAVITY = 0.28;
     const PIPE_SPEED = reduced ? 1.6 : 2.35;
     const PIPE_GAP = 200;
     const BIRD_X = 72;
     const BIRD_R = 14;
-
-    const drawBackground = (ctx: CanvasRenderingContext2D, w: number, h: number) => {
-      const p = paletteRef.current;
-      ctx.fillStyle = p.paperSunk;
-      ctx.fillRect(0, 0, w, h);
-
-      // Subtle terminal grid
-      ctx.strokeStyle = p.rule;
-      ctx.globalAlpha = 0.35;
-      ctx.lineWidth = 1;
-      const grid = 28;
-      for (let x = 0; x < w; x += grid) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, h);
-        ctx.stroke();
-      }
-      for (let y = 0; y < h; y += grid) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(w, y);
-        ctx.stroke();
-      }
-      ctx.globalAlpha = 1;
-
-      // Drifting binary dust
-      ctx.fillStyle = p.inkFaint;
-      ctx.globalAlpha = 0.2;
-      ctx.font = "10px ui-monospace, monospace";
-      for (const star of starsRef.current) {
-        star.x -= star.sp;
-        if (star.x < -20) star.x = w + 10;
-        ctx.fillText(Math.random() > 0.5 ? "1" : "0", star.x, star.y);
-      }
-      ctx.globalAlpha = 1;
-    };
+    const PW = 52;
+    const CHIP_H = 16;
 
     const drawPillar = (
       ctx: CanvasRenderingContext2D,
@@ -238,101 +249,67 @@ export function FlappyTech() {
       isTop: boolean
     ) => {
       const p = paletteRef.current;
-      const pw = 52;
       const barH = isTop ? topH : h - bottomY;
       const barY = isTop ? 0 : bottomY;
-      const gateText = isTop ? "please" : "hire me";
+      if (barH <= 0) return;
 
       ctx.fillStyle = p.paperRaised;
-      ctx.strokeStyle = p.rule;
-      ctx.lineWidth = 2;
-      ctx.fillRect(x, barY, pw, barH);
-      ctx.strokeRect(x, barY, pw, barH);
-
-      // Amber accent edge (deploy pipeline stripe)
+      ctx.fillRect(x, barY, PW, barH);
       ctx.fillStyle = p.accent;
-      ctx.globalAlpha = 0.85;
-      ctx.fillRect(x + pw - 4, barY, 4, barH);
-      ctx.globalAlpha = 1;
+      ctx.fillRect(x + PW - 4, barY, 4, barH);
 
-      // Gate label on the gap-facing cap — only if the bar is tall enough
       if (barH < 28) return;
 
-      ctx.font = "600 10px ui-monospace, SFMono-Regular, Menlo, monospace";
-      const chipH = 16;
-      const chipPad = 6;
-      const tw = Math.min(ctx.measureText(gateText).width + chipPad * 2, pw - 4);
-      const chipX = x + (pw - tw) / 2;
-      const chipY = isTop ? topH - chipH - 4 : bottomY + 4;
+      const gateText = isTop ? GATE_TOP : GATE_BOTTOM;
+      const chipY = isTop ? topH - CHIP_H - 4 : bottomY + 4;
+      const chipW = isTop ? 44 : 52;
 
       ctx.fillStyle = p.accentSoft;
-      ctx.globalAlpha = 0.98;
-      ctx.fillRect(chipX, chipY, tw, chipH);
-      ctx.globalAlpha = 1;
-      ctx.strokeStyle = p.accent;
-      ctx.lineWidth = 1;
-      ctx.strokeRect(chipX + 0.5, chipY + 0.5, tw - 1, chipH - 1);
-
+      ctx.fillRect(x + (PW - chipW) / 2, chipY, chipW, CHIP_H);
       ctx.fillStyle = p.accent;
+      ctx.font = "600 10px ui-monospace, monospace";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText(gateText, x + pw / 2, chipY + chipH / 2);
+      ctx.fillText(gateText, x + PW / 2, chipY + CHIP_H / 2);
       ctx.textAlign = "left";
       ctx.textBaseline = "alphabetic";
     };
 
-    const drawBird = (
-      ctx: CanvasRenderingContext2D,
-      y: number,
-      rot: number
-    ) => {
+    const drawBird = (ctx: CanvasRenderingContext2D, y: number, rot: number) => {
       const p = paletteRef.current;
       ctx.save();
       ctx.translate(BIRD_X, y);
       ctx.rotate(rot);
-
-      // Glow
-      ctx.shadowColor = p.accent;
-      ctx.shadowBlur = 14;
-
-      // Body — amber "commit" packet
       ctx.fillStyle = p.accent;
       ctx.beginPath();
       ctx.roundRect(-BIRD_R, -BIRD_R, BIRD_R * 2, BIRD_R * 2, 5);
       ctx.fill();
-
-      ctx.shadowBlur = 0;
-
-      // Monogram
       ctx.fillStyle = p.paper;
       ctx.font = "bold 11px ui-monospace, monospace";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText("dk", 0, 1);
-
-      // Tiny bracket wings
-      ctx.fillStyle = p.ink;
-      ctx.globalAlpha = 0.5;
-      ctx.font = "12px ui-monospace, monospace";
-      ctx.fillText("{", -BIRD_R - 10, 2);
-      ctx.fillText("}", BIRD_R + 4, 2);
-      ctx.globalAlpha = 1;
-
       ctx.restore();
     };
 
-    const tick = () => {
-      const { w, h, dpr } = sizeRef.current;
-      if (w === 0 || h === 0) {
-        rafRef.current = requestAnimationFrame(tick);
+    let lastTime = performance.now();
+
+    const tick = (now: number) => {
+      rafRef.current = requestAnimationFrame(tick);
+
+      if (!activeRef.current) {
+        lastTime = now;
         return;
       }
 
-      const ctx = canvas.getContext("2d");
-      if (!ctx) {
-        rafRef.current = requestAnimationFrame(tick);
-        return;
-      }
+      const { w, h, dpr } = sizeRef.current;
+      if (w === 0 || h === 0) return;
+
+      const ctx = canvas.getContext("2d", { alpha: false });
+      if (!ctx) return;
+
+      const dt = Math.min((now - lastTime) / 16.67, 2.5);
+      lastTime = now;
 
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       frameRef.current += 1;
@@ -341,41 +318,33 @@ export function FlappyTech() {
       const bird = birdRef.current;
 
       if (phase === "playing") {
-        bird.vy += GRAVITY;
-        bird.y += bird.vy;
+        bird.vy += GRAVITY * dt;
+        bird.y += bird.vy * dt;
         bird.rot = Math.min(Math.PI / 4, Math.max(-0.35, bird.vy * 0.06));
 
-        // Spawn pillars
         const last = obstaclesRef.current[obstaclesRef.current.length - 1];
         if (!last || last.x < w - PIPE_GAP) {
           spawnObstacle(w, h, w + 40);
         }
 
         for (const obs of obstaclesRef.current) {
-          obs.x -= PIPE_SPEED;
+          obs.x -= PIPE_SPEED * dt;
 
-          const pw = 52;
           const topH = obs.gapCenter - obs.gapSize / 2;
           const bottomY = obs.gapCenter + obs.gapSize / 2;
 
-          // Score when passed
-          if (!obs.scored && obs.x + pw < BIRD_X) {
+          if (!obs.scored && obs.x + PW < BIRD_X) {
             obs.scored = true;
             scoreRef.current += 1;
           }
 
-          // Collision — hitbox slightly forgiving
-          const hitX = BIRD_X;
-          const hitY = bird.y;
-          const inX = hitX + BIRD_R > obs.x && hitX - BIRD_R < obs.x + pw;
-          if (inX && (hitY - BIRD_R < topH || hitY + BIRD_R > bottomY)) {
+          const inX = BIRD_X + BIRD_R > obs.x && BIRD_X - BIRD_R < obs.x + PW;
+          if (inX && (bird.y - BIRD_R < topH || bird.y + BIRD_R > bottomY)) {
             syncPhase("dead");
             try {
-              const b = Number(window.localStorage.getItem(BEST_KEY) ?? 0);
-              if (scoreRef.current > b) {
-                window.localStorage.setItem(BEST_KEY, String(scoreRef.current));
+              if (scoreRef.current > bestRef.current) {
                 bestRef.current = scoreRef.current;
-                setBest(scoreRef.current);
+                window.localStorage.setItem(BEST_KEY, String(scoreRef.current));
               }
             } catch {
               /* ignore */
@@ -393,8 +362,10 @@ export function FlappyTech() {
         bird.rot = 0;
       }
 
-      // ---- Render ----
-      drawBackground(ctx, w, h);
+      paintBackground(w, h, dpr);
+      if (bgCanvas.width > 0) {
+        ctx.drawImage(bgCanvas, 0, 0, w, h);
+      }
 
       for (const obs of obstaclesRef.current) {
         const topH = obs.gapCenter - obs.gapSize / 2;
@@ -405,7 +376,6 @@ export function FlappyTech() {
 
       drawBird(ctx, bird.y, bird.rot);
 
-      // Score — tucked under the top bar, top-right
       const p = paletteRef.current;
       ctx.textAlign = "right";
       ctx.fillStyle = p.ink;
@@ -416,7 +386,6 @@ export function FlappyTech() {
       ctx.fillText(`best ${bestRef.current}`, w - 10, 32);
       ctx.textAlign = "left";
 
-      // Overlays
       if (phase === "idle") {
         ctx.fillStyle = p.ink;
         ctx.globalAlpha = 0.88;
@@ -435,7 +404,6 @@ export function FlappyTech() {
         ctx.globalAlpha = 0.72;
         ctx.fillRect(0, 0, w, h);
         ctx.globalAlpha = 1;
-
         ctx.fillStyle = p.ink;
         ctx.textAlign = "center";
         ctx.font = "600 15px ui-monospace, monospace";
@@ -445,17 +413,18 @@ export function FlappyTech() {
         ctx.fillText(`${scoreRef.current} deploys · tap to retry`, w / 2, h / 2 - 6);
         ctx.textAlign = "left";
       }
-
-      rafRef.current = requestAnimationFrame(tick);
     };
 
+    paletteRef.current = readPalette();
     rafRef.current = requestAnimationFrame(tick);
 
     return () => {
       cancelAnimationFrame(rafRef.current);
       ro.disconnect();
+      io.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, [resetGame, spawnObstacle, resolvedTheme]);
+  }, [resetGame, spawnObstacle]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
