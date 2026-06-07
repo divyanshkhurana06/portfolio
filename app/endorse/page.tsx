@@ -19,7 +19,7 @@ export default async function EndorsePage() {
   return (
     <div className="container-prose pt-12 sm:pt-16">
       <PageHeader
-        eyebrow="endorse"
+        eyebrow="endorse."
         title="Review."
         lede="If we've worked together on a project, an internship, a hackathon, or even in a class: just leave a short note here."
       />
