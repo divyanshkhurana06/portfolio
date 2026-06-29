@@ -7,8 +7,8 @@ import { useCallback, useEffect, useRef } from "react";
 /* -------------------------------------------------------------------------- */
 
 const BEST_KEY = "flappy-tech:best";
-const GATE_TOP = "please";
-const GATE_BOTTOM = "hire me";
+const GATE_TOP = "";
+const GATE_BOTTOM = "";
 
 type Palette = {
   paper: string;
