@@ -439,7 +439,7 @@ export function FlappyTech() {
 
   return (
     <section
-      aria-label="Flappy Tech"
+      aria-label="Flappy Bird"
       ref={containerRef}
       className="relative h-[44vh] min-h-[300px] w-full overflow-hidden rounded-xl
                  border border-rule/70 bg-paper-sunk select-none"
