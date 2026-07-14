@@ -2,7 +2,7 @@ import type { EndorsementRecord } from "@/lib/data";
 
 export function EndorsementList({
   endorsements,
-  emptyMessage = "No endorsements yet — be the first to leave one.",
+  emptyMessage = "No endorsements yet: be the first to leave one.",
 }: {
   endorsements: EndorsementRecord[];
   emptyMessage?: string;
