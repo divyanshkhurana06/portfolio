@@ -36,14 +36,13 @@ export function SiteFooter() {
             </ul>
           </div>
 
-          {/* Internal pages — 2 / 2 / 1 layout. Resume is intentionally
-              excluded; it already has the prominent button on the home page. */}
+          {/* Internal pages. Resume is intentionally excluded; it already has
+              the prominent button on the home page. */}
           <nav aria-label="Footer">
             <p className="eyebrow mb-4">elsewhere</p>
             <div className="grid grid-cols-2 gap-x-6 gap-y-2.5 text-sm">
               <FooterLink href="/projects">projects</FooterLink>
               <FooterLink href="/gallery">gallery</FooterLink>
-              <FooterLink href="/notes">notes</FooterLink>
               <FooterLink href="/endorse">endorse</FooterLink>
               <FooterLink href="/extra">extra</FooterLink>
             </div>

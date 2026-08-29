@@ -1,4 +1,4 @@
-// Site content — projects and notes. Endorsements live in the database.
+// Site content — projects. Endorsements live in the database.
 
 export type Project = {
   slug: string;
@@ -20,12 +20,6 @@ export type Project = {
     highlights?: string[];
     notes?: string;
   };
-};
-
-export type Note = {
-  id: string;
-  date: string;
-  body: string;
 };
 
 export const projects: Project[] = [
@@ -93,33 +87,5 @@ export const projects: Project[] = [
         "Google OAuth + Node.js + Supabase backend",
       ],
     },
-  },
-];
-
-export const notes: Note[] = [
-  {
-    id: "n-005",
-    date: "2026-05-22",
-    body: "Spent the morning rewriting a script I'd been putting off for months. Took thirty minutes. Annoying lesson, learned again.",
-  },
-  {
-    id: "n-004",
-    date: "2026-05-14",
-    body: "Reading a paper on row-polymorphic types. Will probably not understand it, but I like trying.",
-  },
-  {
-    id: "n-003",
-    date: "2026-04-29",
-    body: "New notebook arrived. Filling the first page is the hardest part wrote down today's date and called it progress.",
-  },
-  {
-    id: "n-002",
-    date: "2026-04-18",
-    body: "Went for a walk without my phone for the first time in a while. Highly recommend.",
-  },
-  {
-    id: "n-001",
-    date: "2026-04-09",
-    body: "Cleaning up old side projects. Half of them I forgot I made; the other half I forgot why I made.",
   },
 ];

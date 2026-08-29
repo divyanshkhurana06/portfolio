@@ -71,7 +71,12 @@ function gameDpr(): number {
   return narrow ? 1 : Math.min(raw, 1.5);
 }
 
-export function FlappyTech() {
+export function FlappyTech({
+  onGameOver,
+}: {
+  /** Fires once per crash, with the score that run ended on. */
+  onGameOver?: (score: number) => void;
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef(0);
@@ -85,6 +90,8 @@ export function FlappyTech() {
   const paletteRef = useRef<Palette>(DEFAULT_PALETTE);
   const bestRef = useRef(0);
   const bgKeyRef = useRef("");
+  const onGameOverRef = useRef(onGameOver);
+  onGameOverRef.current = onGameOver;
 
   const { resolvedTheme } = useTheme();
 
@@ -232,6 +239,22 @@ export function FlappyTech() {
     };
     document.addEventListener("visibilitychange", onVisibility);
 
+    /** Every way of losing runs through here, so the score is reported once. */
+    const die = () => {
+      if (phaseRef.current !== "playing") return;
+      syncPhase("dead");
+      const score = scoreRef.current;
+      try {
+        if (score > bestRef.current) {
+          bestRef.current = score;
+          window.localStorage.setItem(BEST_KEY, String(score));
+        }
+      } catch {
+        /* ignore */
+      }
+      onGameOverRef.current?.(score);
+    };
+
     const GRAVITY = 0.28;
     const PIPE_SPEED = reduced ? 1.6 : 2.35;
     const PIPE_GAP = 200;
@@ -340,22 +363,14 @@ export function FlappyTech() {
 
           const inX = BIRD_X + BIRD_R > obs.x && BIRD_X - BIRD_R < obs.x + PW;
           if (inX && (bird.y - BIRD_R < topH || bird.y + BIRD_R > bottomY)) {
-            syncPhase("dead");
-            try {
-              if (scoreRef.current > bestRef.current) {
-                bestRef.current = scoreRef.current;
-                window.localStorage.setItem(BEST_KEY, String(scoreRef.current));
-              }
-            } catch {
-              /* ignore */
-            }
+            die();
           }
         }
 
         obstaclesRef.current = obstaclesRef.current.filter((o) => o.x > -80);
 
         if (bird.y + BIRD_R > h || bird.y - BIRD_R < 0) {
-          syncPhase("dead");
+          die();
         }
       } else if (phase === "idle") {
         bird.y = h / 2 + Math.sin(frameRef.current * 0.04) * 6;

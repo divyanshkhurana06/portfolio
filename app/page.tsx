@@ -3,10 +3,9 @@ import { EndorsementCards } from "@/components/endorsement-list";
 import { ProjectCard } from "@/components/project-card";
 import { TechMarquee } from "@/components/tech-marquee";
 import { ResumeButton } from "@/components/resume-button";
-import { projects, notes } from "@/lib/content";
+import { projects } from "@/lib/content";
 import { getEndorsements } from "@/lib/data";
 import { site } from "@/lib/site";
-import { formatDateShort } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -142,33 +141,6 @@ export default async function HomePage() {
             {projects.filter((p) => p.featured).map((p) => (
               <li key={p.slug}>
                 <ProjectCard project={p} variant="compact" />
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <Divider />
-
-        {/* Notes — short, microblog-style */}
-        <section aria-labelledby="notes">
-          <SectionHeader
-            id="notes"
-            label="recent notes"
-            href="/notes"
-            hrefLabel="all notes"
-          />
-          <ul className="mt-4 space-y-5">
-            {notes.slice(0, 3).map((n) => (
-              <li key={n.id} className="border-l border-rule pl-4">
-                <time
-                  dateTime={n.date}
-                  className="font-mono text-[11px] uppercase tracking-wider text-ink-faint"
-                >
-                  {formatDateShort(n.date)}
-                </time>
-                <p className="mt-1 text-[0.95rem] leading-relaxed text-ink">
-                  {n.body}
-                </p>
               </li>
             ))}
           </ul>

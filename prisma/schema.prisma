@@ -29,3 +29,12 @@ model WhiteboardStroke {
 
   @@index([createdAt])
 }
+
+model FlappyScore {
+  id        String   @id @default(cuid())
+  name      String
+  score     Int
+  createdAt DateTime @default(now())
+
+  @@index([score(sort: Desc)])
+}

@@ -2,6 +2,8 @@ const LIMITS = {
   name: 80,
   relation: 120,
   body: 1000,
+  // Short enough that the leaderboard rows stay one line.
+  flappyName: 14,
 } as const;
 
 export function sanitizeEndorsementInput(raw: {
@@ -36,6 +38,32 @@ export function sanitizeEndorsementInput(raw: {
   }
 
   return { ok: true as const, data: { name, relation, body } };
+}
+
+export function sanitizeFlappyScoreInput(raw: {
+  name?: unknown;
+  score?: unknown;
+  website?: unknown;
+}) {
+  // Same honeypot as the endorsement form.
+  if (typeof raw.website === "string" && raw.website.trim().length > 0) {
+    return { ok: false as const, error: "Invalid submission." };
+  }
+
+  const name = trimString(raw.name, LIMITS.flappyName);
+  if (!name) {
+    return { ok: false as const, error: "Enter a name." };
+  }
+
+  const score = num(raw.score);
+  // 999 is far past anything a person reaches by hand; beyond that someone is
+  // posting straight to the endpoint, and the board is not worth defending
+  // harder than this.
+  if (score === null || !Number.isInteger(score) || score < 1 || score > 999) {
+    return { ok: false as const, error: "Invalid score." };
+  }
+
+  return { ok: true as const, data: { name, score } };
 }
 
 export function sanitizeStrokeInput(raw: {

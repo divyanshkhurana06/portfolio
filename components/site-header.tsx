@@ -10,7 +10,6 @@ const nav = [
   { href: "/", label: "home" },
   { href: "/about", label: "about" },
   { href: "/projects", label: "projects" },
-  { href: "/notes", label: "notes" },
   { href: "/gallery", label: "gallery" },
   { href: "/extra", label: "extra" },
   { href: "/endorse", label: "endorse" },

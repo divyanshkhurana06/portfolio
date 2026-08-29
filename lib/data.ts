@@ -114,3 +114,45 @@ export async function clearWhiteboard(): Promise<void> {
   await ensureDb();
   await prisma.whiteboardStroke.deleteMany();
 }
+
+export type FlappyScoreRecord = {
+  id: string;
+  name: string;
+  score: number;
+  date: string;
+};
+
+/** The board is a top N, so ties break toward whoever got there first. */
+export async function getFlappyScores(limit = 5): Promise<FlappyScoreRecord[]> {
+  try {
+    await ensureDb();
+    const rows = await prisma.flappyScore.findMany({
+      orderBy: [{ score: "desc" }, { createdAt: "asc" }],
+      take: limit,
+    });
+
+    return rows.map((row) => ({
+      id: row.id,
+      name: row.name,
+      score: row.score,
+      date: row.createdAt.toISOString().slice(0, 10),
+    }));
+  } catch (error) {
+    console.error("getFlappyScores", error);
+    return [];
+  }
+}
+
+export async function createFlappyScore(data: {
+  name: string;
+  score: number;
+}): Promise<FlappyScoreRecord> {
+  await ensureDb();
+  const row = await prisma.flappyScore.create({ data });
+  return {
+    id: row.id,
+    name: row.name,
+    score: row.score,
+    date: row.createdAt.toISOString().slice(0, 10),
+  };
+}

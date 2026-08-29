@@ -23,7 +23,14 @@ const INIT_STATEMENTS = [
     "width" REAL NOT NULL DEFAULT 2,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
   )`,
+  `CREATE TABLE IF NOT EXISTS "FlappyScore" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "name" TEXT NOT NULL,
+    "score" INTEGER NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+  )`,
   `CREATE INDEX IF NOT EXISTS "Endorsement_createdAt_idx" ON "Endorsement"("createdAt" DESC)`,
+  `CREATE INDEX IF NOT EXISTS "FlappyScore_score_idx" ON "FlappyScore"("score" DESC)`,
   `CREATE INDEX IF NOT EXISTS "WhiteboardStroke_createdAt_idx" ON "WhiteboardStroke"("createdAt")`,
 ];
 
