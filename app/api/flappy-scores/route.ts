@@ -6,7 +6,7 @@ import { sanitizeFlappyScoreInput } from "@/lib/validation";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-/** Only the top five ever leave the server — the rest is nobody's business. */
+/** Only the top five ever leave the server the rest is nobody's business. */
 const BOARD_SIZE = 5;
 
 export async function GET() {
