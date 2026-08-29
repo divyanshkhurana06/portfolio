@@ -139,7 +139,7 @@ export default async function HomePage() {
             hrefLabel="all projects"
           />
           <ul className="mt-4 grid gap-4 sm:grid-cols-2">
-            {projects.slice(0, 4).map((p) => (
+            {projects.filter((p) => p.featured).map((p) => (
               <li key={p.slug}>
                 <ProjectCard project={p} variant="compact" />
               </li>

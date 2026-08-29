@@ -10,6 +10,10 @@ export type Project = {
   repo?: string;
   /** Extra outbound links (e.g. hackathon showcase). */
   links?: { label: string; href: string }[];
+  /** Hackathon placing, shown as a badge on the card. */
+  award?: string;
+  /** Pulled onto the home page. The rest live on /projects. */
+  featured?: boolean;
   stack?: string[];
   details?: {
     role?: string;
@@ -26,12 +30,35 @@ export type Note = {
 
 export const projects: Project[] = [
   {
+    slug: "swarm",
+    name: "Swarm",
+    blurb:
+      "An on chain data labelling market where every answer is paid the moment it is given, for a fraction of a cent. A requester signs once and the task goes on chain; a worker signs in with Google and gets paid per answer. Neither side needs a wallet, gas, or a seed phrase.",
+    year: 2026,
+    status: "shipped",
+    award: "1st place · Monad Blitz Hyderabad V3",
+    featured: true,
+    href: "https://swarm-rouge-one.vercel.app",
+    repo: "https://github.com/divyanshkhurana06/swarm",
+    stack: ["Next.js", "Solidity", "Monad", "viem", "Privy", "TypeScript"],
+    details: {
+      role: "Solo build: contracts, relayer, and client",
+      highlights: [
+        "Paid per answer on chain, in seconds",
+        "Google sign in and passkeys instead of a wallet",
+        "Gasless: a relayer covers gas, workers never hold any",
+      ],
+    },
+  },
+  {
     slug: "interact",
     name: "Interact",
     blurb:
-      "A full stack dApp that lets users spend crypto on real world things food delivery, flights, shopping through LLM based AI agents and virtual credit cards. Escrow smart contracts handle trustless payments with dual attestation and time based fallback. Won ETHGlobal Prague.",
+      "A full stack dApp that lets users spend crypto on real world things food delivery, flights, shopping through LLM based AI agents and virtual credit cards. Escrow smart contracts handle trustless payments with dual attestation and time based fallback.",
     year: 2025,
     status: "shipped",
+    award: "Winner · ETHGlobal Prague",
+    featured: true,
     repo: "https://github.com/vectorthrust/Interact",
     links: [
       {
@@ -43,7 +70,7 @@ export const projects: Project[] = [
     details: {
       role: "Hackathon team: full stack + smart contracts",
       highlights: [
-        "Won ETHGlobal Prague",
+        "Took the Flare cross chain track",
         "Escrow with dual attestation & time based fallback",
         "Real time agent execution via FastAPI + WebSockets",
       ],

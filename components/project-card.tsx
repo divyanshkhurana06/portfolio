@@ -100,6 +100,8 @@ export function ProjectCard({
             </span>
           </div>
 
+          {project.award ? <AwardBadge award={project.award} /> : null}
+
           <p className="text-[0.95rem] leading-relaxed text-ink-muted">
             {project.blurb}
           </p>
@@ -172,6 +174,8 @@ export function ProjectCard({
               more
             </span>
           </div>
+
+          {project.award ? <AwardBadge award={project.award} /> : null}
 
           {project.details?.role ? (
             <p className="text-xs">
@@ -254,6 +258,35 @@ export function ProjectCard({
         </article>
       </div>
     </div>
+  );
+}
+
+/** A hackathon placing. Loud enough to read first, quiet enough to sit in the card. */
+function AwardBadge({ award }: { award: string }) {
+  return (
+    <p
+      className="inline-flex w-fit items-center gap-1.5 rounded-full border
+                 border-accent/30 bg-accent-soft px-2.5 py-1
+                 text-[11px] font-medium leading-none text-accent"
+    >
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        className="h-3.5 w-3.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M8 21h8" />
+        <path d="M12 17v4" />
+        <path d="M7 4h10v5a5 5 0 0 1-10 0z" />
+        <path d="M17 5h2.5a1.5 1.5 0 0 1 0 5H17" />
+        <path d="M7 5H4.5a1.5 1.5 0 0 0 0 5H7" />
+      </svg>
+      {award}
+    </p>
   );
 }
 
