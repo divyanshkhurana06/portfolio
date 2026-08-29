@@ -2,10 +2,6 @@
 
 import dynamic from "next/dynamic";
 
-// Three.js / react-three-fiber pull in WebGL globals at module-eval time,
-// so we never want them to run on the server. `ssr: false` here keeps the
-// scene strictly client-side; the loading placeholder holds the layout
-// open while the chunk streams in.
 const ExtraScene = dynamic(
   () => import("@/components/extra-scene").then((m) => m.ExtraScene),
   {

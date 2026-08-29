@@ -54,7 +54,6 @@ export function EndorseForm() {
       className="rounded-xl border border-rule/70 bg-paper-raised/40 p-5 sm:p-6"
     >
       <div className="space-y-4">
-        {/* Honeypot — hidden from humans, bots often fill it. */}
         <input
           type="text"
           name="website"

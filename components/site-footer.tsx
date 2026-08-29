@@ -10,9 +10,7 @@ export function SiteFooter() {
   return (
     <footer className="mt-24 border-t border-rule/70">
       <div className="container-wide py-12">
-        {/* Top row: contact + navigation */}
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-[1.2fr_1fr]">
-          {/* Identity + the two ways to reach me + social links */}
           <div>
             <p className="font-serif text-lg italic text-ink">{site.name}</p>
 
@@ -21,8 +19,6 @@ export function SiteFooter() {
               <EmailRow label="college" address={site.emailBackup} />
             </dl>
 
-            {/* Social row, sized to match the emails. Sits a hair below
-                them so the eye reads identity → emails → handles top-down. */}
             <ul className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
               <li>
                 <SocialLink href={site.social.github}>github</SocialLink>
@@ -36,8 +32,6 @@ export function SiteFooter() {
             </ul>
           </div>
 
-          {/* Internal pages. Resume is intentionally excluded; it already has
-              the prominent button on the home page. */}
           <nav aria-label="Footer">
             <p className="eyebrow mb-4">elsewhere</p>
             <div className="grid grid-cols-2 gap-x-6 gap-y-2.5 text-sm">
@@ -49,7 +43,6 @@ export function SiteFooter() {
           </nav>
         </div>
 
-        {/* Bottom hairline + last-updated line */}
         <div className="mt-10 border-t border-rule/60 pt-5">
           <p className="font-mono text-[11px] uppercase tracking-wider text-ink-faint">
             last updated{" "}

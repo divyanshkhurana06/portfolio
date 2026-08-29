@@ -6,7 +6,6 @@ import { sanitizeFlappyScoreInput } from "@/lib/validation";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-/** Only the top five ever leave the server the rest is nobody's business. */
 const BOARD_SIZE = 5;
 
 export async function GET() {
@@ -24,8 +23,6 @@ export async function GET() {
 
 export async function POST(request: Request) {
   const ip = clientIp(request);
-  // A run takes a while to lose, so ten a minute is generous for a person
-  // and still caps how fast a script can stuff the board.
   const limited = rateLimit(`flappy:${ip}`, 10, 60_000);
   if (!limited.ok) {
     return NextResponse.json(
@@ -48,8 +45,6 @@ export async function POST(request: Request) {
 
   try {
     await createFlappyScore(parsed.data);
-    // Hand back the new board so the client doesn't need a second round trip
-    // to find out whether the score actually landed.
     const scores = await getFlappyScores(BOARD_SIZE);
     return NextResponse.json({ scores }, { status: 201 });
   } catch (error) {

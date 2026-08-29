@@ -4,7 +4,6 @@ import type { Project } from "@/lib/content";
 import { cn } from "@/lib/utils";
 import { useCallback, useEffect, useState } from "react";
 
-/** Primary outbound link for the back-face title arrow. */
 function primaryLink(project: Project): { href: string; label: string } | null {
   const first = project.links?.[0];
   if (first) return { href: first.href, label: first.label };
@@ -85,7 +84,6 @@ export function ProjectCard({
       }
     >
       <div className="flip-card-inner">
-        {/* Front */}
         <article
           className="flip-face flex h-full min-h-[240px] flex-col gap-3 rounded-xl
                      border border-rule/70 bg-paper-raised/40 p-5
@@ -138,7 +136,6 @@ export function ProjectCard({
           </p>
         </article>
 
-        {/* Back */}
         <article
           className="flip-face flip-back flex h-full flex-col gap-3 overflow-hidden
                      rounded-xl border border-rule/70 bg-paper-sunk p-5"
@@ -261,7 +258,6 @@ export function ProjectCard({
   );
 }
 
-/** A hackathon placing. Loud enough to read first, quiet enough to sit in the card. */
 function AwardBadge({ award }: { award: string }) {
   return (
     <p

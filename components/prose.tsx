@@ -1,8 +1,6 @@
 import type { HTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
-// Minimal "prose" wrapper so we don't need @tailwindcss/typography yet.
-// Styles long-form text content (paragraphs, lists, headings) with sensible defaults.
 export function Prose({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div

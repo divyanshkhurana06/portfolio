@@ -30,9 +30,6 @@ type Tech =
   | { name: string; path: string; kind?: "icon" }
   | { name: string; kind: "text"; glyph: string };
 
-// Mixed order on purpose — a casual stream of languages, frameworks,
-// infra, and a handful of blockchain bits picked up from the Interact
-// hackathon project.
 const TECH: Tech[] = [
   { name: "Python", path: siPython.path },
   { name: "React", path: siReact.path },
@@ -61,13 +58,9 @@ const TECH: Tech[] = [
   { name: "Git", path: siGit.path },
 ];
 
-// One loop = duplicate the list once, animate the track from 0 → -50%
-// over this duration. Lower number = faster.
 const DURATION_SECONDS = 40;
 
 export function TechMarquee() {
-  // Render twice; the second copy makes the seam invisible as the track
-  // loops back to start.
   const items = [...TECH, ...TECH];
 
   return (

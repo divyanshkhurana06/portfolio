@@ -2,7 +2,6 @@ type Entry = { count: number; resetAt: number };
 
 const buckets = new Map<string, Entry>();
 
-/** Simple in-memory rate limiter (per server instance). */
 export function rateLimit(
   key: string,
   limit = 8,

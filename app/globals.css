@@ -4,29 +4,27 @@
 
 @layer base {
   :root {
-    /* Light mode — warm paper, ink */
-    --paper: 250 248 243;        /* #faf8f3  warm off-white */
-    --paper-raised: 245 242 234; /* #f5f2ea */
-    --paper-sunk: 238 234 224;   /* #eeeae0 */
-    --ink: 28 25 23;             /* #1c1917  near-black, warm */
-    --ink-muted: 87 83 78;       /* #57534e  stone-600 */
-    --ink-faint: 168 162 158;    /* #a8a29e  stone-400 */
-    --rule: 231 229 228;         /* #e7e5e4 */
-    --accent: 180 83 9;          /* #b45309  amber-700, restrained */
-    --accent-soft: 254 243 199;  /* #fef3c7 */
+    --paper: 250 248 243;
+    --paper-raised: 245 242 234;
+    --paper-sunk: 238 234 224;
+    --ink: 28 25 23;
+    --ink-muted: 87 83 78;
+    --ink-faint: 168 162 158;
+    --rule: 231 229 228;
+    --accent: 180 83 9;
+    --accent-soft: 254 243 199;
   }
 
   .dark {
-    /* Dark mode — warm charcoal */
-    --paper: 20 18 17;           /* #141211 */
-    --paper-raised: 28 25 23;    /* #1c1917 */
-    --paper-sunk: 12 11 10;      /* #0c0b0a */
-    --ink: 240 237 230;          /* #f0ede6 */
-    --ink-muted: 168 162 158;    /* #a8a29e */
-    --ink-faint: 120 113 108;    /* #78716c */
-    --rule: 41 37 36;            /* #292524 */
-    --accent: 245 158 11;        /* #f59e0b  amber-500 */
-    --accent-soft: 41 37 36;     /* #292524 */
+    --paper: 20 18 17;
+    --paper-raised: 28 25 23;
+    --paper-sunk: 12 11 10;
+    --ink: 240 237 230;
+    --ink-muted: 168 162 158;
+    --ink-faint: 120 113 108;
+    --rule: 41 37 36;
+    --accent: 245 158 11;
+    --accent-soft: 41 37 36;
   }
 
   * {
@@ -50,7 +48,6 @@
     font-feature-settings: "ss01", "cv11";
   }
 
-  /* Focus ring: visible, calm */
   :focus-visible {
     outline: 2px solid rgb(var(--accent));
     outline-offset: 3px;
@@ -62,7 +59,6 @@
     color: rgb(var(--ink));
   }
 
-  /* Better default underlines */
   a {
     text-underline-offset: 3px;
     text-decoration-thickness: 1px;
@@ -78,12 +74,10 @@
     @apply mx-auto w-full max-w-3xl px-5 sm:px-6;
   }
 
-  /* Small caps label, used for section headings */
   .eyebrow {
     @apply text-xs font-medium uppercase tracking-[0.14em] text-ink-muted;
   }
 
-  /* Subtle link underline that grows on hover */
   .link {
     @apply text-ink underline decoration-ink-faint underline-offset-[3px]
            transition-colors hover:decoration-accent hover:text-accent;
@@ -93,15 +87,10 @@
     @apply text-ink no-underline transition-colors hover:text-accent;
   }
 
-  /* Hairline divider that respects rule color */
   .hairline {
     @apply h-px w-full bg-rule;
   }
 
-  /* Marquee — used by <TechMarquee/>. The track is rendered with its
-     items duplicated exactly once, then translated from 0 to -50% so the
-     loop seam is invisible. Pure CSS, runs on the GPU compositor —
-     stays buttery smooth even on cheap laptops. */
   .marquee {
     @apply overflow-hidden;
     -webkit-mask-image: linear-gradient(
@@ -153,10 +142,6 @@
   }
 }
 
-/* Flip card — used by <ProjectCard/>. Front face sits in normal flow
-   so it provides the height; back face is absolutely positioned and
-   rotated 180° behind it. Gated by `hover: hover` so touch devices
-   don't get a stuck-flip state from a phantom hover after tap. */
 .flip-card {
   perspective: 1200px;
 }
@@ -175,7 +160,6 @@
   }
 }
 
-/* Touch / coarse pointer — flip toggled via .is-flipped from ProjectCard */
 @media (hover: none) {
   .flip-card.is-flipped .flip-card-inner {
     transform: rotateY(180deg);
@@ -200,7 +184,6 @@
 }
 
 @layer utilities {
-  /* Pretty text balance for headings (supported in modern browsers) */
   .text-balance {
     text-wrap: balance;
   }
@@ -209,7 +192,6 @@
     text-wrap: pretty;
   }
 
-  /* Reduce motion: be respectful */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,

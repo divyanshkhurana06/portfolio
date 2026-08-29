@@ -12,14 +12,6 @@ import {
   Vector3,
 } from "three";
 
-/* -------------------------------------------------------------------------- */
-/*  A field of instanced columns. Each column reads its world-space distance */
-/*  from the cursor's raycast hit on the ground plane and rides a damped     */
-/*  sine wave radiating outward, so the surface ripples wherever you point.  */
-/*  When the cursor goes idle, two slow drift waves fade in so the field    */
-/*  never sits perfectly still.                                              */
-/* -------------------------------------------------------------------------- */
-
 const COLS = 38;
 const ROWS = 38;
 const SPACING = 0.2;
@@ -28,7 +20,6 @@ const COUNT = COLS * ROWS;
 function CursorField({ isDark }: { isDark: boolean }) {
   const meshRef = useRef<InstancedMesh>(null);
 
-  // Cheap reused scratch objects — never re-allocate in the frame loop.
   const dummy = useMemo(() => new Object3D(), []);
   const plane = useMemo(() => new Plane(new Vector3(0, 1, 0), 0), []);
   const hit = useMemo(() => new Vector3(), []);
@@ -36,7 +27,6 @@ function CursorField({ isDark }: { isDark: boolean }) {
   const mouse = useMemo(() => new Vector3(), []);
   const tmpColor = useMemo(() => new Color(), []);
 
-  // Two-stop gradient. Peaks ride toward the accent; troughs stay quiet.
   const baseColor = useMemo(
     () => new Color(isDark ? "#1f1c1a" : "#d6cfc1"),
     [isDark]
@@ -52,10 +42,6 @@ function CursorField({ isDark }: { isDark: boolean }) {
     const mesh = meshRef.current;
     if (!mesh) return;
 
-    // Project the 2D pointer onto the ground plane in world space. We
-    // only update the wave's source when the pointer actually moves —
-    // gives us a clean "idle" signal a few hundred ms after the user
-    // stops moving the mouse, so the ambient drift can fade in.
     const moved =
       pointer.x !== lastPointerRef.current.x ||
       pointer.y !== lastPointerRef.current.y;
@@ -68,12 +54,10 @@ function CursorField({ isDark }: { isDark: boolean }) {
       }
     }
 
-    // Smooth pointer chase so quick cursor jumps don't snap the ripple.
     mouse.lerp(target, 0.18);
 
     const t = clock.elapsedTime;
     const sinceMove = t - lastMoveAtRef.current;
-    // Idle waves ease in over ~600ms after the cursor goes quiet.
     const idleMix = clamp01((sinceMove - 0.3) * 1.6);
 
     let i = 0;
@@ -86,10 +70,8 @@ function CursorField({ isDark }: { isDark: boolean }) {
         const dz = z - mouse.z;
         const d = Math.sqrt(dx * dx + dz * dz);
 
-        // Damped sine radiating out from the cursor hit point.
         const ripple = Math.sin(d * 4.5 - t * 3.4) * Math.exp(-d * 0.55) * 0.85;
 
-        // Two crossing drifts so the idle motion never looks like a grid.
         const driftA = Math.sin(t * 0.55 + cx * 0.28 + cz * 0.21) * 0.18;
         const driftB = Math.cos(t * 0.4 - cx * 0.18 + cz * 0.32) * 0.14;
         const idle = (driftA + driftB) * idleMix;
@@ -99,7 +81,6 @@ function CursorField({ isDark }: { isDark: boolean }) {
 
         dummy.position.set(x, wave * 0.45, z);
         dummy.scale.set(1, 1 + intensity * 5.5, 1);
-        // Tilt each column slightly with the wave for a more tactile feel.
         dummy.rotation.set(wave * 0.18, 0, wave * -0.18);
         dummy.updateMatrix();
         mesh.setMatrixAt(i, dummy.matrix);
@@ -121,7 +102,6 @@ function CursorField({ isDark }: { isDark: boolean }) {
       args={[undefined, undefined, COUNT]}
       castShadow
       receiveShadow
-      // Bounds change every frame; let the renderer keep us in view.
       frustumCulled={false}
     >
       <boxGeometry args={[0.085, 0.45, 0.085]} />
@@ -213,9 +193,7 @@ export function ExtraScene() {
         shadow-camera-top={6}
         shadow-camera-bottom={-6}
       />
-      {/* Warm accent rim from the back-left so the column tops catch fire. */}
       <pointLight position={[-4, 1.5, -3]} intensity={1.4} color="#f59e0b" />
-      {/* Cool fill so the field isn't entirely amber. */}
       <pointLight position={[4, 1, 3]} intensity={0.5} color="#3b82f6" />
 
       <Suspense fallback={<Loader />}>
@@ -223,8 +201,6 @@ export function ExtraScene() {
         <CursorField isDark={isDark} />
       </Suspense>
 
-      {/* Drag to rotate. Zoom is off so the page can still scroll past
-          this canvas without it stealing the wheel. */}
       <OrbitControls
         enablePan={false}
         enableZoom={false}

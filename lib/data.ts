@@ -122,7 +122,6 @@ export type FlappyScoreRecord = {
   date: string;
 };
 
-/** The board is a top N, so ties break toward whoever got there first. */
 export async function getFlappyScores(limit = 5): Promise<FlappyScoreRecord[]> {
   try {
     await ensureDb();

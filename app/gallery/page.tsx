@@ -41,8 +41,6 @@ export default function GalleryPage() {
                 }
               >
                 {item.video ? (
-                  // Short, silent, and looping — it should read as a moving
-                  // photo, not something you have to press play on.
                   <video
                     src={item.video}
                     poster={item.src}

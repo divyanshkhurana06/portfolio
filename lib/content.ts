@@ -1,4 +1,3 @@
-// Site content — projects. Endorsements live in the database.
 
 export type Project = {
   slug: string;
@@ -8,11 +7,8 @@ export type Project = {
   status: "shipped" | "in progress" | "archived" | "exploring";
   href?: string;
   repo?: string;
-  /** Extra outbound links (e.g. hackathon showcase). */
   links?: { label: string; href: string }[];
-  /** Hackathon placing, shown as a badge on the card. */
   award?: string;
-  /** Pulled onto the home page. The rest live on /projects. */
   featured?: boolean;
   stack?: string[];
   details?: {

@@ -30,11 +30,9 @@ export function SiteHeader() {
       </a>
 
       <div className="container-wide flex items-center justify-between gap-6 py-5">
-        {/* Brand — signature-style: first name in serif, last name in
-            muted italic. The accent dot doubles as a "live" indicator. */}
         <Link
           href="/"
-          aria-label={`${site.name} — home`}
+          aria-label={`${site.name} home`}
           className="group inline-flex items-baseline gap-2.5 text-ink no-underline"
         >
           <span
@@ -48,7 +46,6 @@ export function SiteHeader() {
           </span>
         </Link>
 
-        {/* Desktop nav + theme toggle */}
         <div className="hidden items-center gap-2 md:flex">
           <nav aria-label="Primary">
             <ul className="flex items-center gap-1 text-sm">
@@ -81,13 +78,11 @@ export function SiteHeader() {
           <ThemeToggle />
         </div>
 
-        {/* Mobile theme toggle — sits next to brand so it's reachable */}
         <div className="md:hidden">
           <ThemeToggle />
         </div>
       </div>
 
-      {/* Mobile nav: a thin, tappable strip under the brand row. */}
       <nav aria-label="Primary mobile" className="md:hidden">
         <ul
           className="container-wide flex flex-wrap items-center gap-x-4 gap-y-1

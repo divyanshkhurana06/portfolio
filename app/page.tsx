@@ -13,7 +13,6 @@ export default async function HomePage() {
   const endorsements = await getEndorsements(2);
   return (
     <div className="pt-12 sm:pt-16">
-      {/* Intro */}
       <section aria-labelledby="hello" className="container-wide">
         <div className="max-w-prose">
           <p className="eyebrow flex items-center gap-2">
@@ -58,8 +57,6 @@ export default async function HomePage() {
             .
           </p>
 
-          {/* Small, deliberate row of actions. The resume gets a touch
-              of weight; the rest are quieter. */}
           <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3">
             <ResumeButton />
             <span aria-hidden className="text-ink-faint">·</span>
@@ -121,7 +118,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Tech marquee — full-bleed band that scrolls just below the intro */}
       <div className="mt-14 sm:mt-16">
         <TechMarquee />
       </div>
@@ -129,7 +125,6 @@ export default async function HomePage() {
       <div className="container-wide">
         <Divider />
 
-        {/* Selected projects */}
         <section aria-labelledby="projects">
           <SectionHeader
             id="projects"
@@ -148,8 +143,6 @@ export default async function HomePage() {
 
         <Divider />
 
-        {/* Recent kind words — the two most recent endorsements bubble up
-            here from the shared list. The rest live on /endorse. */}
         <section aria-labelledby="kind-words" className="pb-4">
           <SectionHeader
             id="kind-words"
@@ -160,7 +153,7 @@ export default async function HomePage() {
           <EndorsementCards endorsements={endorsements} />
           {endorsements.length === 0 && (
             <p className="mt-2 text-sm text-ink-muted">
-              No endorsements yet —{" "}
+              No endorsements yet.{" "}
               <Link href="/endorse" className="link">
                 leave the first one
               </Link>

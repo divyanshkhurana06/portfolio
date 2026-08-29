@@ -2,9 +2,6 @@
 
 import { useTheme } from "next-themes";
 import { useCallback, useEffect, useRef } from "react";
-/* -------------------------------------------------------------------------- */
-/*  Flappy Tech — flap through merge gates. Score = deploys.                  */
-/* -------------------------------------------------------------------------- */
 
 const BEST_KEY = "flappy-tech:best";
 const GATE_TOP = "";
@@ -74,7 +71,6 @@ function gameDpr(): number {
 export function FlappyTech({
   onGameOver,
 }: {
-  /** Fires once per crash, with the score that run ended on. */
   onGameOver?: (score: number) => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -147,7 +143,6 @@ export function FlappyTech({
       const b = window.localStorage.getItem(BEST_KEY);
       if (b) bestRef.current = Number(b) || 0;
     } catch {
-      /* ignore */
     }
   }, []);
 
@@ -177,7 +172,6 @@ export function FlappyTech({
       bgCtx.fillStyle = p.paperSunk;
       bgCtx.fillRect(0, 0, w, h);
 
-      // Sparse grid — one path, fewer lines than per-frame strokes
       bgCtx.strokeStyle = p.rule;
       bgCtx.globalAlpha = 0.28;
       bgCtx.lineWidth = 1;
@@ -239,7 +233,6 @@ export function FlappyTech({
     };
     document.addEventListener("visibilitychange", onVisibility);
 
-    /** Every way of losing runs through here, so the score is reported once. */
     const die = () => {
       if (phaseRef.current !== "playing") return;
       syncPhase("dead");
@@ -250,7 +243,6 @@ export function FlappyTech({
           window.localStorage.setItem(BEST_KEY, String(score));
         }
       } catch {
-        /* ignore */
       }
       onGameOverRef.current?.(score);
     };

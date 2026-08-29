@@ -4,7 +4,6 @@ const globalForDb = globalThis as unknown as {
   dbReady: Promise<void> | undefined;
 };
 
-/** SQLite schema — mirrors prisma/migrations init (IF NOT EXISTS for serverless /tmp). */
 const INIT_STATEMENTS = [
   `CREATE TABLE IF NOT EXISTS "Endorsement" (
     "id" TEXT NOT NULL PRIMARY KEY,
@@ -34,10 +33,6 @@ const INIT_STATEMENTS = [
   `CREATE INDEX IF NOT EXISTS "WhiteboardStroke_createdAt_idx" ON "WhiteboardStroke"("createdAt")`,
 ];
 
-/**
- * Ensures SQLite tables exist. On Vercel, build-time migrate does not carry over
- * to runtime (/tmp is fresh per instance), so we init on first server start.
- */
 export async function ensureDb(): Promise<void> {
   if (!globalForDb.dbReady) {
     globalForDb.dbReady = (async () => {

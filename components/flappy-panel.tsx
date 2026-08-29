@@ -3,10 +3,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FlappyTech } from "@/components/flappy-tech";
 
-/* -------------------------------------------------------------------------- */
-/*  The game, plus the five people who have done best at it.                  */
-/* -------------------------------------------------------------------------- */
-
 type Score = { id: string; name: string; score: number; date: string };
 
 const BOARD_SIZE = 5;
@@ -29,12 +25,9 @@ export function FlappyPanel() {
       const json = (await res.json()) as { scores?: Score[] };
       setScores(json.scores ?? []);
     } catch {
-      // Offline or the route is down. The board just stays as it was.
     }
   }, []);
 
-  // Someone else's run should show up here without a reload — that is the
-  // whole point of it being a shared board rather than a local high score.
   useEffect(() => {
     load();
     const t = setInterval(load, POLL_MS);
@@ -46,11 +39,9 @@ export function FlappyPanel() {
       const saved = window.localStorage.getItem(NAME_KEY);
       if (saved) setName(saved);
     } catch {
-      /* ignore */
     }
   }, []);
 
-  /** Would this score displace someone, given what we last saw? */
   const makesBoard = useCallback(
     (score: number) => {
       if (score < 1) return false;
@@ -94,7 +85,6 @@ export function FlappyPanel() {
       try {
         window.localStorage.setItem(NAME_KEY, entered);
       } catch {
-        /* ignore */
       }
       setScores(json.scores ?? []);
       setPending(null);
@@ -128,7 +118,7 @@ export function FlappyPanel() {
             <li className="font-mono text-[11px] text-ink-faint">loading…</li>
           ) : scores.length === 0 ? (
             <li className="font-mono text-[11px] text-ink-faint">
-              nobody yet — the board is yours
+              nobody yet, the board is yours
             </li>
           ) : (
             scores.map((s, i) => (
@@ -154,7 +144,7 @@ export function FlappyPanel() {
               htmlFor="flappy-name"
               className="block text-[0.8rem] text-ink-muted"
             >
-              {pending} deploys — that makes the board. Who should I put down?
+              {pending} deploys. That makes the board. Who should I put down?
             </label>
             <div className="mt-2 flex gap-2">
               <input

@@ -1,11 +1,8 @@
 export type GalleryItem = {
-  /** Poster frame for video items; the image itself otherwise. */
   src: string;
   alt: string;
   caption: string;
-  /** Wider tile in the bento grid on sm+ */
   wide?: boolean;
-  /** Present on video items — plays muted and looping in place of the image. */
   video?: string;
 };
 
@@ -50,7 +47,7 @@ export const galleryItems: GalleryItem[] = [
   },
   {
     src: "/gallery/ethglobal-award.png",
-    alt: "Interact winning the Flare cross-chain track at ETHGlobal Prague",
+    alt: "Interact winning the Flare cross chain track at ETHGlobal Prague",
     caption: "Interact · Flare track winner · ETHGlobal Prague",
     wide: true,
   },

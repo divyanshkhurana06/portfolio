@@ -1,6 +1,3 @@
-// Small, refined "Resume" pill button. Opens the PDF in a new tab and
-// hints at download (most browsers will treat the `download` attribute
-// as a real download if the user explicitly chooses Save).
 export function ResumeButton({
   href = "/divyansh-khurana-resume.pdf",
   label = "Resume",
@@ -22,18 +19,15 @@ export function ResumeButton({
                  hover:shadow-[0_2px_0_rgb(0_0_0_/_0.04)]"
       aria-label="Download résumé (PDF)"
     >
-      {/* Tiny mono label, like a tag */}
       <span className="font-mono text-[10px] uppercase tracking-wider text-ink-faint
                        transition-colors group-hover:text-accent">
         pdf
       </span>
 
-      {/* Subtle vertical separator */}
       <span aria-hidden className="h-3 w-px bg-rule" />
 
       <span className="font-medium">{label}</span>
 
-      {/* Document-with-down-arrow glyph */}
       <svg
         aria-hidden="true"
         viewBox="0 0 24 24"

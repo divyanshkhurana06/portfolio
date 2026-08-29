@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { siChessdotcom, siDiscord, siSpotify, siSteam, siX } from "simple-icons";
 
-// GeoGuessr isn't in simple-icons yet, so we inline a location-pin glyph
-// — conceptually obvious for a "guess where in the world" platform.
 const GEOGUESSR_PIN_PATH =
   "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z";
 import { ExtraSceneClient } from "@/components/extra-scene-client";
@@ -14,13 +12,6 @@ export const metadata: Metadata = {
   description:
     "",
 };
-
-/* -------------------------------------------------------------------------- */
-/*  /extra — the canvas dominates the top of the page. No headings, no       */
-/*  caption, no descriptive paragraph; just the columns. Below it sits a     */
-/*  tidy "elsewhere" grid for off-site platforms and a small snapshot of    */
-/*  whatever I'm into at the moment.                                         */
-/* -------------------------------------------------------------------------- */
 
 export default function ExtraPage() {
   return (
@@ -43,7 +34,6 @@ export default function ExtraPage() {
       <div className="container-wide">
         <Divider />
 
-        {/* Off-site presence */}
         <section aria-labelledby="elsewhere">
           <header className="mb-5 flex items-baseline justify-between gap-4">
             <h2 id="elsewhere" className="eyebrow">
@@ -101,7 +91,6 @@ export default function ExtraPage() {
 
         <Divider />
 
-        {/* Currently into — a tiny snapshot of what I'm consuming. */}
         <section aria-labelledby="currently">
           <header className="mb-5 flex items-baseline justify-between gap-4">
             <h2 id="currently" className="eyebrow">
@@ -117,7 +106,6 @@ export default function ExtraPage() {
 
    
 
-        {/* Tiny note at the bottom — keep the page from ending abruptly. */}
         <section className="pb-4">
           <p className="font-mono text-[11px] uppercase tracking-wider text-ink-faint">
           </p>
@@ -126,10 +114,6 @@ export default function ExtraPage() {
     </div>
   );
 }
-
-/* -------------------------------------------------------------------------- */
-/*  Components                                                                */
-/* -------------------------------------------------------------------------- */
 
 function Divider() {
   return <hr className="my-12 border-0 border-t border-rule/70" aria-hidden />;
@@ -165,8 +149,6 @@ function PlatformCard({
                    hover:-translate-y-0.5 hover:border-accent/60 hover:bg-paper-raised
                    focus-visible:-translate-y-0.5 focus-visible:border-accent"
       >
-        {/* Brand glyph — sized like a profile picture. The brand color
-            does the heavy visual work; the rest of the card stays calm. */}
         <span
           aria-hidden
           className="grid h-11 w-11 shrink-0 place-items-center rounded-md
