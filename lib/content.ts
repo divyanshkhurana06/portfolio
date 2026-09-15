@@ -20,6 +20,32 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "salvage",
+    name: "Salvage",
+    blurb:
+      "An AI agent that finds money a crypto wallet is owed but never collected, uncollected Uniswap v3 fees and unclaimed airdrops on Ethereum and Base, and claims it, with every number verified against the chain before it is shown. Ships as a naive v1 and a fixed v2, recorded side by side in PRISM to prove where the first one lies.",
+    year: 2026,
+    status: "shipped",
+    award: "1st place · FORGE AI Reliability Hackathon · graVITas VIT",
+    featured: true,
+    repo: "https://github.com/divyanshkhurana06/Salvage",
+    links: [
+      {
+        label: "Demo",
+        href: "https://drive.google.com/file/d/157DDFppwOD_8xa75MQf1_LciQYiUtn6w/view?usp=sharing",
+      },
+    ],
+    stack: ["Python", "Anvil forks", "Uniswap v3", "Chainlink", "PRISM", "LLM agents"],
+    details: {
+      role: "Team lead: agent, chain verification, PRISM tracing",
+      highlights: [
+        "v1 reported $151M on a wallet worth $141; v2 was within 5% on 32 of 32",
+        "Every claim is simulate, execute, read the receipt",
+        "Chain verdict attached to every PRISM trace",
+      ],
+    },
+  },
+  {
     slug: "swarm",
     name: "Swarm",
     blurb:
