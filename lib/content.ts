@@ -56,6 +56,7 @@ export const projects: Project[] = [
     featured: true,
     href: "https://swarm-rouge-one.vercel.app",
     repo: "https://github.com/divyanshkhurana06/swarm",
+    links: [{ label: "Demo", href: "/gallery/monad-blitz-demo.mp4" }],
     stack: ["Next.js", "Solidity", "Monad", "viem", "Privy", "TypeScript"],
     details: {
       role: "Solo build: contracts, relayer, and client",
@@ -100,6 +101,7 @@ export const projects: Project[] = [
     year: 2025,
     status: "shipped",
     repo: "https://github.com/divyanshkhurana06/mailed0",
+    links: [{ label: "Devpost", href: "https://devpost.com/software/mailed" }],
     stack: ["React", "TypeScript", "Tailwind", "Node.js", "Supabase", "Hugging Face"],
     details: {
       role: "Solo build",

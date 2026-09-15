@@ -5,9 +5,9 @@ import { cn } from "@/lib/utils";
 import { useCallback, useEffect, useState } from "react";
 
 function primaryLink(project: Project): { href: string; label: string } | null {
+  if (project.href) return { href: project.href, label: "Live" };
   const first = project.links?.[0];
   if (first) return { href: first.href, label: first.label };
-  if (project.href) return { href: project.href, label: "Live" };
   if (project.repo) return { href: project.repo, label: "Source" };
   return null;
 }
