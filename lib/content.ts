@@ -100,7 +100,6 @@ export const projects: Project[] = [
       "A governance security monitor for the multisigs that control real protocols. Paste a contract and it finds the Safe above it, recovers who actually signed each transaction, tests whether the signers are independent, dates every signer's last onchain signal, and reports the honest quorum against the declared threshold. Scanned 47 contracts holding $4.82B; reports are sold to agents over x402 on Hedera.",
     year: 2026,
     status: "shipped",
-    award: "ETHOnline 2026 · Hedera, Chainlink and The Graph tracks",
     href: "https://rollcall-pi.vercel.app",
     repo: "https://github.com/divyanshkhurana06/rollcall",
     links: [
