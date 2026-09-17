@@ -94,6 +94,32 @@ export const projects: Project[] = [
     },
   },
   {
+    slug: "rollcall",
+    name: "Roll Call",
+    blurb:
+      "A governance security monitor for the multisigs that control real protocols. Paste a contract and it finds the Safe above it, recovers who actually signed each transaction, tests whether the signers are independent, dates every signer's last onchain signal, and reports the honest quorum against the declared threshold. Scanned 47 contracts holding $4.82B; reports are sold to agents over x402 on Hedera.",
+    year: 2026,
+    status: "shipped",
+    award: "ETHOnline 2026 · Hedera, Chainlink and The Graph tracks",
+    href: "https://rollcall-pi.vercel.app",
+    repo: "https://github.com/divyanshkhurana06/rollcall",
+    links: [
+      {
+        label: "Showcase",
+        href: "https://ethglobal.com/showcase/roll-call-7rtg5",
+      },
+    ],
+    stack: ["TypeScript", "React", "viem", "Hedera", "Chainlink CRE", "The Graph"],
+    details: {
+      role: "Solo build: signature recovery, permutation test, x402 API, CRE workflows",
+      highlights: [
+        "Mantle's bridge: declared 6 of 14, honest quorum 2, 7 signers dark",
+        "Every report paid over x402, attested to HCS, priced by the work it takes",
+        "Confidential CRE workflow that de-risks a loan when governance degrades",
+      ],
+    },
+  },
+  {
     slug: "mailed",
     name: "Mailed",
     blurb:
