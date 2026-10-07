@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { EndorsementCards } from "@/components/endorsement-list";
+import { LatestWin } from "@/components/latest-win";
 import { ProjectCard } from "@/components/project-card";
 import { TechMarquee } from "@/components/tech-marquee";
 import { ResumeButton } from "@/components/resume-button";
@@ -117,6 +118,10 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      <div className="container-wide mt-10 sm:mt-12">
+        <LatestWin />
+      </div>
 
       <div className="mt-14 sm:mt-16">
         <TechMarquee />

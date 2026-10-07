@@ -8,6 +8,54 @@ export type GalleryItem = {
 
 export const galleryItems: GalleryItem[] = [
   {
+    src: "/gallery/dagar-pitch.jpg",
+    alt: "Divyansh pitching Dagar on stage at the Fund My Crazy grand finale",
+    caption: "Pitching Dagar \u00b7 Fund My Crazy finale \u00b7 IIT Delhi",
+    wide: true,
+  },
+  {
+    src: "/gallery/fmc-winners.jpg",
+    alt: "The Fund My Crazy winners on stage with their trophies and the judges",
+    caption: "Winners \u00b7 Fund My Crazy 2026 \u00b7 Google Gemini",
+    wide: true,
+  },
+  {
+    src: "/gallery/fmc-trophy.jpg",
+    alt: "Divyansh holding the Fund My Crazy trophy",
+    caption: "Fund My Crazy \u00b7 trophy",
+  },
+  {
+    src: "/gallery/dagar-stage.jpg",
+    alt: "The Dagar title slide on the main screen during the pitch",
+    caption: "Dagar \u00b7 Our Community and Living",
+  },
+  {
+    src: "/gallery/fmc-judges.jpg",
+    alt: "Divyansh with the other winners and the judges after the result",
+    caption: "After the result \u00b7 with the judges",
+  },
+  {
+    src: "/gallery/fmc-finalists.jpg",
+    alt: "The ten Fund My Crazy finalists on stage",
+    caption: "The final ten \u00b7 from 1,92,000 entries",
+    wide: true,
+  },
+  {
+    src: "/gallery/fmc-congrats.jpg",
+    alt: "The congratulations screen at the Fund My Crazy finale",
+    caption: "Congratulations screen \u00b7 Rendezvous IIT Delhi",
+  },
+  {
+    src: "/gallery/iit-delhi.jpg",
+    alt: "Divyansh with the trophy outside the IIT Delhi main building",
+    caption: "IIT Delhi",
+  },
+  {
+    src: "/gallery/fmc-banner.jpg",
+    alt: "The Fund My Crazy grand finale banner on the IIT Delhi campus",
+    caption: "1,92,000 ideas \u00b7 10 finalists \u00b7 the finale banner",
+  },
+  {
     src: "/gallery/monad-blitz-team.jpg",
     alt: "The Swarm team holding a 1st place $500 board at Monad Blitz Hyderabad V3",
     caption: "Swarm · 1st place · Monad Blitz Hyderabad V3",

@@ -5,7 +5,7 @@ export const site = {
   title:
     "Divyansh Khurana. CS @ VIT, building at the AI × crypto edge",
   description:
-    "Personal site of Divyansh Khurana, CS undergrad at VIT. I build full stack apps, AI agents, and crypto experiments. Currently interning at Powergrid.",
+    "Personal site of Divyansh Khurana, CS undergrad at VIT and winner of Fund My Crazy 2026 by Google Gemini. I build full stack apps, AI agents, and crypto experiments.",
   url: "https://divyanshkhurana.com",
   email: "divyanshkhurana06@gmail.com",
   emailBackup: "divyansh.khurana2024@vitstudent.ac.in",

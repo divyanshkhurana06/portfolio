@@ -20,6 +20,35 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "dagar",
+    name: "Dagar",
+    blurb:
+      "An app that helps a town and its authorities give street vendors a legal spot. It started with the chai wala outside my house, whose stall a municipal truck kept taking away. The law has promised him a vending certificate for years. Dagar is how a town can finally issue it.",
+    year: 2026,
+    status: "in progress",
+    award: "Winner \u00b7 Fund My Crazy 2026 \u00b7 Google Gemini",
+    featured: true,
+    links: [
+      {
+        label: "Google's post",
+        href: "https://www.instagram.com/p/Ddy1xgeAmoM/?img_index=1",
+      },
+      {
+        label: "The idea",
+        href: "https://www.instagram.com/p/DdlxeoMyS60/",
+      },
+    ],
+    stack: ["Gemini", "Mapping", "Civic tech"],
+    details: {
+      role: "Solo: idea, research and pitch",
+      highlights: [
+        "Picked from 1,92,000 entries to the final ten",
+        "Pitched live at IIT Delhi to Tanmay Bhat, Sahiba Bali and Varun Mayya",
+        "Theme: Our Community and Living",
+      ],
+    },
+  },
+  {
     slug: "salvage",
     name: "Salvage",
     blurb:

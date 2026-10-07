@@ -43,7 +43,7 @@ export default function AboutPage() {
           role="Software Engineering Intern"
           org="Powergrid"
           when="May 2026 to Jul 2026"
-          note="Summer internship in Delhi. Working on ml models and .net interface."
+          note="Backend work on internal applications in C# and ASP.NET Core, SQL reporting for other departments, and validation of large ERP and SAP extracts in Python. Built a guest house booking portal for the ERP and IT department."
         />
         <Entry
           role="Data Management Intern"
@@ -74,9 +74,17 @@ export default function AboutPage() {
 
       <Section title="a thing I'm proud of">
         <p className="text-[0.95rem] leading-[1.7] text-ink-muted">
-          <strong className="text-ink">Interact</strong>: winner at ETHGlobal
-          Prague. An AI agent that talks to smart contracts in plain English.
-          See <a href="/projects" className="link">projects</a> for the rest.
+          <strong className="text-ink">Dagar</strong>: winner of Fund My Crazy
+          2026, a Google Gemini competition, picked from 1,92,000 entries and
+          pitched on stage at IIT Delhi. It helps a town give its street vendors
+          a legal spot, and it started with the chai wala outside my house.
+        </p>
+        <p className="mt-3 text-[0.95rem] leading-[1.7] text-ink-muted">
+          Before that, <strong className="text-ink">Interact</strong> won at
+          ETHGlobal Prague, and <strong className="text-ink">Swarm</strong> and{" "}
+          <strong className="text-ink">Salvage</strong> both took first place at
+          their hackathons. See <a href="/projects" className="link">projects</a>{" "}
+          for the rest.
         </p>
       </Section>
 
