@@ -10,13 +10,7 @@ export function LatestWin() {
     >
       <div className="grid gap-0 md:grid-cols-[1.05fr_1fr]">
         <div className="flex flex-col justify-center gap-3 p-6 sm:p-8">
-          <p className="eyebrow flex items-center gap-2 text-accent">
-            <span
-              aria-hidden
-              className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-accent"
-            />
-            just happened
-          </p>
+          <p className="eyebrow text-accent">just happened</p>
 
           <h2
             id="latest-win"

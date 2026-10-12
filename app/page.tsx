@@ -19,7 +19,7 @@ export default async function HomePage() {
           <p className="eyebrow flex items-center gap-2">
             <span
               aria-hidden
-              className="inline-block h-2 w-2 animate-pulse rounded-full bg-accent"
+              className="inline-block h-2 w-2 rounded-full bg-accent"
             />
             {site.location}
           </p>

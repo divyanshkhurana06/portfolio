@@ -56,6 +56,17 @@ export const galleryItems: GalleryItem[] = [
     caption: "1,92,000 ideas \u00b7 10 finalists \u00b7 the finale banner",
   },
   {
+    src: "/gallery/forgeai-team.jpg",
+    alt: "The Ingenious team after winning the ForgeAI Reliability Hackathon at graVITas VIT",
+    caption: "Ingenious \u00b7 ForgeAI champions \u00b7 graVITas VIT",
+    wide: true,
+  },
+  {
+    src: "/gallery/forgeai-winner.jpg",
+    alt: "The ForgeAI 2026 grand champion screen announcing Ingenious as the winner",
+    caption: "ForgeAI 2026 \u00b7 grand champion",
+  },
+  {
     src: "/gallery/monad-blitz-team.jpg",
     alt: "The Swarm team holding a 1st place $500 board at Monad Blitz Hyderabad V3",
     caption: "Swarm · 1st place · Monad Blitz Hyderabad V3",
